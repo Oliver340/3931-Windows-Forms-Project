@@ -10,3 +10,14 @@ C:\Users\olive\source\repos\3931 Project windows forms\3931 Project windows form
 C:\Users\olive\source\repos\3931 Project windows forms\3931 Project windows forms\obj\Debug\3931 Project windows forms.pdb
 C:\Users\olive\source\repos\3931 Project windows forms\3931 Project windows forms\bin\Debug\NAudio.dll
 C:\Users\olive\source\repos\3931 Project windows forms\3931 Project windows forms\obj\Debug\3931 Project windows forms.csproj.CopyComplete
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\bin\Debug\3931 Project windows forms.exe.config
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\bin\Debug\3931 Project windows forms.exe
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\bin\Debug\3931 Project windows forms.pdb
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.csproj.AssemblyReference.cache
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\_3931_Project_windows_forms.Form1.resources
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\_3931_Project_windows_forms.Properties.Resources.resources
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.csproj.GenerateResource.cache
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.csproj.CoreCompileInputs.cache
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.csproj.CopyComplete
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.exe
+C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.pdb
