@@ -1,4 +1,8 @@
 ﻿
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
 namespace _3931_Project_windows_forms
 {
     partial class Form1
@@ -75,6 +79,12 @@ namespace _3931_Project_windows_forms
             this.trackBar1.Size = new System.Drawing.Size(104, 56);
             this.trackBar1.TabIndex = 3;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
+            //
+            // Cursor1
+            //
+            this.WaveChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseDown);
+            this.WaveChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseMove);
+            this.WaveChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseUp);
             // 
             // vScrollBar1
             // 
@@ -103,11 +113,40 @@ namespace _3931_Project_windows_forms
             this.PerformLayout();
 
         }
+        int mdown;
+        complex[] Highlighted;
+
+        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
+        {
+            WaveChart.Refresh();
+        }
+
+        private void WaveChart_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                WaveChart.Refresh();
+                using (Graphics g = WaveChart.CreateGraphics())
+                {
+                    g.DrawLine(new Pen(Color.Red, 1), new Point(mdown, 20), new Point(mdown, 266));
+                    g.DrawLine(new Pen(Color.Red, 1), new Point(e.X, 20), new Point(e.X, 266));
+                }
+            }
+        }
+
+        private void WaveChart_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                mdown = e.Location.X;
+            }            
+        }
 
         #endregion
 
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataVisualization.Charting.Chart WaveChart;
+        private System.Windows.Forms.DataVisualization.Charting.Cursor CursorX;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.VScrollBar vScrollBar1;
     }
