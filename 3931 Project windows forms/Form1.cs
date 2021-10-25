@@ -70,7 +70,7 @@ namespace _3931_Project_windows_forms
             WaveChart.ChartAreas[0].AxisX.Minimum = 0;
             WaveChart.ChartAreas[0].AxisX.Maximum = Double.NaN;
             WaveChart.ChartAreas[0].AxisX.ScrollBar.Enabled = true;
-            WaveChart.ChartAreas[0].AxisX.ScaleView.Size = newData.Length / 100;
+            WaveChart.ChartAreas[0].AxisX.ScaleView.Size = newData.Length / (vScrollBar1.Value + 1);
 
             WaveChart.ChartAreas[0].AxisY.Minimum = newData.Min();
             WaveChart.ChartAreas[0].AxisY.Maximum = newData.Max();
@@ -100,6 +100,12 @@ namespace _3931_Project_windows_forms
                 changeVolume(plottedWaveData, waveData, (double) trackBar1.Value / 5, waveData.Length);
                 plotWaveform(plottedWaveData);
             }
+        }
+
+        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            WaveChart.ResetAutoValues();
+            WaveChart.ChartAreas[0].AxisX.ScaleView.Size = waveData.Length / (vScrollBar1.Value + 1);
         }
     }
 }
