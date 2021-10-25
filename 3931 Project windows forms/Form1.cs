@@ -4,14 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using HINSTANCE = System.IntPtr;
 
 namespace _3931_Project_windows_forms
 {
 
     public partial class Form1 : Form
     {
-        //[DllImport("RecordDLL.dll")]
-        //public static extern void ReverseMemory(BYTE* pBuffer, int iLength);
+        [DllImport("RecordDLL.dll")]
+        public static extern int DllMain(HINSTANCE hInstance);
 
         public Form1()
         {
@@ -19,7 +20,8 @@ namespace _3931_Project_windows_forms
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            HINSTANCE hInstance = Marshal.GetHINSTANCE(typeof(AppContext).Module);
+            DllMain(hInstance);
         }
 
         public double[] waveData;
@@ -104,8 +106,11 @@ namespace _3931_Project_windows_forms
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            WaveChart.ResetAutoValues();
-            WaveChart.ChartAreas[0].AxisX.ScaleView.Size = waveData.Length / (vScrollBar1.Value + 1);
+            if (waveData != null)
+            {
+                WaveChart.ResetAutoValues();
+                WaveChart.ChartAreas[0].AxisX.ScaleView.Size = waveData.Length / (vScrollBar1.Value + 1);
+            }
         }
 
         void changeVolume(double[] amplitudes, double[] originalAmplitudes, double change, int length)
