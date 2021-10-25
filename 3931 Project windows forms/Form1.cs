@@ -10,8 +10,8 @@ namespace _3931_Project_windows_forms
 
     public partial class Form1 : Form
     {
-        [DllImport("Asn3DLL.dll")]
-        public static extern void changeVolume(double[] amplitudes, double[] originalAmplitudes, double change, int length);
+        //[DllImport("RecordDLL.dll")]
+        //public static extern void ReverseMemory(BYTE* pBuffer, int iLength);
 
         public Form1()
         {
@@ -106,6 +106,14 @@ namespace _3931_Project_windows_forms
         {
             WaveChart.ResetAutoValues();
             WaveChart.ChartAreas[0].AxisX.ScaleView.Size = waveData.Length / (vScrollBar1.Value + 1);
+        }
+
+        void changeVolume(double[] amplitudes, double[] originalAmplitudes, double change, int length)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                amplitudes[i] = originalAmplitudes[i] * change;
+            }
         }
     }
 }
