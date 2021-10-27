@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace _3931_Project_windows_forms
@@ -33,12 +32,13 @@ namespace _3931_Project_windows_forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.WaveChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             ((System.ComponentModel.ISupportInitialize)(this.WaveChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -56,17 +56,17 @@ namespace _3931_Project_windows_forms
             // WaveChart
             // 
             this.WaveChart.AccessibleName = "WaveChart";
-            chartArea4.Name = "ChartArea1";
-            this.WaveChart.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.WaveChart.Legends.Add(legend4);
+            chartArea1.Name = "ChartArea1";
+            this.WaveChart.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.WaveChart.Legends.Add(legend1);
             this.WaveChart.Location = new System.Drawing.Point(12, 41);
             this.WaveChart.Name = "WaveChart";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Legend = "Legend1";
-            series4.Name = "chartSeries";
-            this.WaveChart.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "chartSeries";
+            this.WaveChart.Series.Add(series1);
             this.WaveChart.Size = new System.Drawing.Size(941, 392);
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";
@@ -85,11 +85,21 @@ namespace _3931_Project_windows_forms
             this.WaveChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseMove);
             this.WaveChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseUp);
             // 
+            // vScrollBar1
+            // 
+            this.vScrollBar1.Location = new System.Drawing.Point(12, 64);
+            this.vScrollBar1.Name = "vScrollBar1";
+            this.vScrollBar1.Size = new System.Drawing.Size(21, 329);
+            this.vScrollBar1.TabIndex = 4;
+            this.vScrollBar1.Value = 50;
+            this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(965, 482);
+            this.ClientSize = new System.Drawing.Size(1164, 586);
+            this.Controls.Add(this.vScrollBar1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.WaveChart);
             this.Controls.Add(this.button1);
@@ -102,34 +112,6 @@ namespace _3931_Project_windows_forms
             this.PerformLayout();
 
         }
-        int mdown;
-        complex[] Highlighted;
-
-        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
-        {
-            WaveChart.Refresh();
-        }
-
-        private void WaveChart_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                WaveChart.Refresh();
-                using (Graphics g = WaveChart.CreateGraphics())
-                {
-                    g.DrawLine(new Pen(Color.Red, 1), new Point(mdown, 20), new Point(mdown, 266));
-                    g.DrawLine(new Pen(Color.Red, 1), new Point(e.X, 20), new Point(e.X, 266));
-                }
-            }
-        }
-
-        private void WaveChart_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                mdown = e.Location.X;
-            }            
-        }
 
         #endregion
 
@@ -137,6 +119,7 @@ namespace _3931_Project_windows_forms
         private System.Windows.Forms.DataVisualization.Charting.Chart WaveChart;
         private System.Windows.Forms.DataVisualization.Charting.Cursor CursorX;
         private System.Windows.Forms.TrackBar trackBar1;
+        private System.Windows.Forms.VScrollBar vScrollBar1;
     }
 }
 
