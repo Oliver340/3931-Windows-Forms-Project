@@ -14,6 +14,8 @@ namespace _3931_Project_windows_forms
 
     public partial class Form1 : Form
     {
+        //double x1 = 0;
+        //double x2 = 0;
         [DllImport("RecordDLL.dll")]
         public static extern int DllMain(HINSTANCE hInstance);
 
@@ -91,6 +93,9 @@ namespace _3931_Project_windows_forms
 
         private void plotWaveform(double[] newData)
         {
+            WaveChart.ChartAreas[0].CursorX.IsUserEnabled = true;
+            WaveChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
+            WaveChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
             WaveChart.Series["chartSeries"].Points.Clear();
             for (int i = 0; i < newData.Length; i++)
             {
@@ -117,39 +122,26 @@ namespace _3931_Project_windows_forms
         }
 
         int mdown;
-        List<DataPoint> Highlighted = new List<DataPoint>();
+        List<DataPoint> Highlighted;
         private void WaveChart_MouseUp(object sender, MouseEventArgs e)
         {
+            double x1 = WaveChart.ChartAreas[0].CursorX.SelectionStart;
+            double x2 = WaveChart.ChartAreas[0].CursorX.SelectionEnd;
+            Highlighted = new List<DataPoint>();
             Axis ax = WaveChart.ChartAreas[0].AxisX;
-            Axis ay = WaveChart.ChartAreas[0].AxisY;
-            Point p1 = new Point(mdown, 0);
-            Point p2 = new Point(e.X, Bottom);
-            Rectangle area = new Rectangle(Math.Min(p1.X, p2.X), Math.Min(p1.Y, p2.Y), Math.Abs(p1.X - p2.X), Math.Abs(p1.Y - p2.Y));
-            foreach(DataPoint wave in WaveChart.Series["chartSeries"].Points)
+            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
             {
-                int x = (int)ax.ValueToPixelPosition(wave.XValue);
-                int y = (int)ay.ValueToPixelPosition(wave.YValues[0]);
-                if (area.Contains(new Point(x, y))) {
+                int x = (int)(ax.ValueToPixelPosition(wave.XValue)-94);
+                if ((x1 <= x && x <= x2) || (x2 <= x && x <= x1))
+                {
                     Highlighted.Add(wave);
                 }
             }
-            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points) {
+            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
+            {
                 wave.Color = Highlighted.Contains(wave) ? Color.Red : Color.Blue;
             }
             WaveChart.Refresh();
-        }
-
-        private void WaveChart_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                WaveChart.Refresh();
-                using (Graphics g = WaveChart.CreateGraphics())
-                {
-                    g.DrawLine(new Pen(Color.Red, 1), new Point(mdown, 20), new Point(mdown, 266));
-                    g.DrawLine(new Pen(Color.Red, 1), new Point(e.X, 20), new Point(e.X, 266));
-                }
-            }
         }
 
         private void WaveChart_MouseDown(object sender, MouseEventArgs e)
