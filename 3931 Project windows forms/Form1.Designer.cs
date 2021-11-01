@@ -45,9 +45,10 @@ namespace _3931_Project_windows_forms
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 3);
+            this.button1.Location = new System.Drawing.Point(18, 5);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 32);
+            this.button1.Size = new System.Drawing.Size(112, 50);
             this.button1.TabIndex = 0;
             this.button1.Text = "Open";
             this.button1.UseVisualStyleBackColor = true;
@@ -58,51 +59,49 @@ namespace _3931_Project_windows_forms
             this.WaveChart.AccessibleName = "WaveChart";
             chartArea1.Name = "ChartArea1";
             this.WaveChart.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
             legend1.Name = "Legend1";
             this.WaveChart.Legends.Add(legend1);
-            this.WaveChart.Location = new System.Drawing.Point(12, 41);
+            this.WaveChart.Location = new System.Drawing.Point(18, 64);
+            this.WaveChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.WaveChart.Name = "WaveChart";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Legend = "Legend1";
             series1.Name = "chartSeries";
             this.WaveChart.Series.Add(series1);
-            this.WaveChart.Size = new System.Drawing.Size(941, 392);
+            this.WaveChart.Size = new System.Drawing.Size(1412, 612);
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(35, 439);
+            this.trackBar1.Location = new System.Drawing.Point(52, 686);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(104, 56);
+            this.trackBar1.Size = new System.Drawing.Size(156, 90);
             this.trackBar1.TabIndex = 3;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            //
-            // Cursor1
-            //
-/*            this.WaveChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseDown);
-            this.WaveChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseMove);
-            this.WaveChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseUp);*/
             // 
             // vScrollBar1
             // 
-            this.vScrollBar1.Location = new System.Drawing.Point(12, 64);
+            this.vScrollBar1.Location = new System.Drawing.Point(18, 100);
             this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(21, 329);
+            this.vScrollBar1.Size = new System.Drawing.Size(21, 514);
             this.vScrollBar1.TabIndex = 4;
             this.vScrollBar1.Value = 50;
             this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1164, 586);
+            this.ClientSize = new System.Drawing.Size(1746, 916);
             this.Controls.Add(this.vScrollBar1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.WaveChart);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
