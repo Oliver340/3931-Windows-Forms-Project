@@ -40,6 +40,8 @@ namespace _3931_Project_windows_forms
             this.WaveChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WaveChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -71,20 +73,17 @@ namespace _3931_Project_windows_forms
             this.WaveChart.Size = new System.Drawing.Size(941, 392);
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";
+            this.WaveChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseDown);
+            this.WaveChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseMove);
+            this.WaveChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseUp);
             // 
             // trackBar1
             // 
             this.trackBar1.Location = new System.Drawing.Point(35, 439);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(104, 56);
+            this.trackBar1.Size = new System.Drawing.Size(351, 56);
             this.trackBar1.TabIndex = 3;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            //
-            // Cursor1
-            //
-            this.WaveChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseDown);
-            this.WaveChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseMove);
-            this.WaveChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseUp);
             // 
             // vScrollBar1
             // 
@@ -95,11 +94,33 @@ namespace _3931_Project_windows_forms
             this.vScrollBar1.Value = 50;
             this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(377, 8);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Record";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(638, 7);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 6;
+            this.button3.Text = "Load";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1164, 586);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.vScrollBar1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.WaveChart);
@@ -149,6 +170,8 @@ namespace _3931_Project_windows_forms
         private System.Windows.Forms.DataVisualization.Charting.Cursor CursorX;
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.VScrollBar vScrollBar1;
+        private Button button2;
+        private Button button3;
     }
 }
 
