@@ -1,6 +1,5 @@
 ﻿
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace _3931_Project_windows_forms
@@ -33,9 +32,9 @@ namespace _3931_Project_windows_forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.WaveChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
@@ -48,9 +47,10 @@ namespace _3931_Project_windows_forms
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 3);
+            this.button1.Location = new System.Drawing.Point(18, 5);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 32);
+            this.button1.Size = new System.Drawing.Size(112, 50);
             this.button1.TabIndex = 0;
             this.button1.Text = "Open";
             this.button1.UseVisualStyleBackColor = true;
@@ -59,18 +59,23 @@ namespace _3931_Project_windows_forms
             // WaveChart
             // 
             this.WaveChart.AccessibleName = "WaveChart";
-            chartArea1.Name = "ChartArea1";
-            this.WaveChart.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.WaveChart.Legends.Add(legend1);
-            this.WaveChart.Location = new System.Drawing.Point(12, 41);
+            this.WaveChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            chartArea3.Name = "ChartArea1";
+            this.WaveChart.ChartAreas.Add(chartArea3);
+            legend3.Enabled = false;
+            legend3.Name = "Legend1";
+            this.WaveChart.Legends.Add(legend3);
+            this.WaveChart.Location = new System.Drawing.Point(18, 64);
+            this.WaveChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.WaveChart.Name = "WaveChart";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.Name = "chartSeries";
-            this.WaveChart.Series.Add(series1);
-            this.WaveChart.Size = new System.Drawing.Size(941, 392);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Legend = "Legend1";
+            series3.Name = "chartSeries";
+            this.WaveChart.Series.Add(series3);
+            this.WaveChart.Size = new System.Drawing.Size(1412, 612);
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";
             this.WaveChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseDown);
@@ -79,17 +84,25 @@ namespace _3931_Project_windows_forms
             // 
             // trackBar1
             // 
-            this.trackBar1.Location = new System.Drawing.Point(35, 439);
+            this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.trackBar1.Location = new System.Drawing.Point(52, 686);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.trackBar1.Name = "trackBar1";
+<<<<<<< HEAD
             this.trackBar1.Size = new System.Drawing.Size(351, 56);
+=======
+            this.trackBar1.Size = new System.Drawing.Size(156, 90);
+>>>>>>> 496af22578c4919ed90638725477413274c0ce73
             this.trackBar1.TabIndex = 3;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // vScrollBar1
             // 
-            this.vScrollBar1.Location = new System.Drawing.Point(12, 64);
+            this.vScrollBar1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.vScrollBar1.Location = new System.Drawing.Point(18, 100);
             this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(21, 329);
+            this.vScrollBar1.Size = new System.Drawing.Size(21, 514);
             this.vScrollBar1.TabIndex = 4;
             this.vScrollBar1.Value = 50;
             this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
@@ -116,15 +129,20 @@ namespace _3931_Project_windows_forms
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(1164, 586);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
+=======
+            this.ClientSize = new System.Drawing.Size(1746, 916);
+>>>>>>> 496af22578c4919ed90638725477413274c0ce73
             this.Controls.Add(this.vScrollBar1);
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.WaveChart);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -133,34 +151,6 @@ namespace _3931_Project_windows_forms
             this.ResumeLayout(false);
             this.PerformLayout();
 
-        }
-        int mdown;
-        complex[] Highlighted;
-
-        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
-        {
-            WaveChart.Refresh();
-        }
-
-        private void WaveChart_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                WaveChart.Refresh();
-                using (Graphics g = WaveChart.CreateGraphics())
-                {
-                    g.DrawLine(new Pen(Color.Red, 1), new Point(mdown, 20), new Point(mdown, 266));
-                    g.DrawLine(new Pen(Color.Red, 1), new Point(e.X, 20), new Point(e.X, 266));
-                }
-            }
-        }
-
-        private void WaveChart_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                mdown = e.Location.X;
-            }            
         }
 
         #endregion

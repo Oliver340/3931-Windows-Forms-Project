@@ -1,15 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
+using HINSTANCE = System.IntPtr;
 
 namespace _3931_Project_windows_forms
 {
 
     public partial class Form1 : Form
     {
+        //double x1 = 0;
+        //double x2 = 0;
         [DllImport("RecordDLL.dll")]
         public static extern int start();
         [DllImport("RecordDLL.dll")]
@@ -94,6 +100,9 @@ namespace _3931_Project_windows_forms
         // Function to plot a wave
         private void plotWaveform(double[] newData)
         {
+            WaveChart.ChartAreas[0].CursorX.IsUserEnabled = true;
+            WaveChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
+            WaveChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
             WaveChart.Series["chartSeries"].Points.Clear();
             for (int i = 0; i < newData.Length; i++)
             {
@@ -174,6 +183,37 @@ namespace _3931_Project_windows_forms
         private void button2_Click(object sender, EventArgs e)
         {
             start();
+        }
+
+        int mdown;
+        List<DataPoint> Highlighted;
+        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
+        {
+            double x1 = WaveChart.ChartAreas[0].CursorX.SelectionStart;
+            double x2 = WaveChart.ChartAreas[0].CursorX.SelectionEnd;
+            Highlighted = new List<DataPoint>();
+            Axis ax = WaveChart.ChartAreas[0].AxisX;
+            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
+            {
+                int x = (int)(ax.ValueToPixelPosition(wave.XValue)-94);
+                if ((x1 <= x && x <= x2) || (x2 <= x && x <= x1))
+                {
+                    Highlighted.Add(wave);
+                }
+            }
+            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
+            {
+                wave.Color = Highlighted.Contains(wave) ? Color.Red : Color.Blue;
+            }
+            WaveChart.Refresh();
+        }
+
+        private void WaveChart_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                mdown = e.Location.X;
+            }
         }
 
         // Load Button
