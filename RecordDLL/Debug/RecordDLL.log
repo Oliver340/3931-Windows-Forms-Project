@@ -1,0 +1,13 @@
+﻿  Record1.c
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.h(15,1): warning C4005: 'Function': macro redefinition
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.h(14): message : see previous definition of 'Function'
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.h(16,1): warning C4005: 'Function': macro redefinition
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.h(15): message : see previous definition of 'Function'
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.h(17,1): warning C4005: 'Function': macro redefinition
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.h(16): message : see previous definition of 'Function'
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.h(18,1): warning C4005: 'Function': macro redefinition
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.h(17): message : see previous definition of 'Function'
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\RecordDLL\Record1.c(45,23): warning C4018: '<': signed/unsigned mismatch
+  LINK : C:\Users\dylan\source\repos\3931-Windows-Forms-Project\Debug\RecordDLL.dll not found or not built by the last incremental link; performing full link
+     Creating library C:\Users\dylan\source\repos\3931-Windows-Forms-Project\Debug\RecordDLL.lib and object C:\Users\dylan\source\repos\3931-Windows-Forms-Project\Debug\RecordDLL.exp
+  RecordDLL.vcxproj -> C:\Users\dylan\source\repos\3931-Windows-Forms-Project\Debug\RecordDLL.dll
