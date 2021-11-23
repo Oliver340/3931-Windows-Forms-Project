@@ -41,6 +41,7 @@ namespace _3931_Project_windows_forms
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.WaveChart.SelectionRangeChanged += chart_SelectionRangeChanged;
             ((System.ComponentModel.ISupportInitialize)(this.WaveChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -76,8 +77,6 @@ namespace _3931_Project_windows_forms
             this.WaveChart.Size = new System.Drawing.Size(941, 392);
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";
-            this.WaveChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseDown);
-            this.WaveChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.WaveChart_MouseUp);
             // 
             // trackBar1
             // 

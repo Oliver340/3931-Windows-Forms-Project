@@ -40,6 +40,9 @@ namespace _3931_Project_windows_forms
         public double[] plottedWaveData;
         public byte[] bufferWaveData;
         public byte[] bufferPlottedWaveData;
+        List<double> Highlighted;
+        double x1 = 0;
+        double x2 = 0;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -53,6 +56,7 @@ namespace _3931_Project_windows_forms
                 return;
             }
 
+            Highlighted = new List<double>();
             BinaryReader binaryReader = new BinaryReader(System.IO.File.OpenRead(openFileDialog.FileName));
 
             //Initializing Header
@@ -107,6 +111,9 @@ namespace _3931_Project_windows_forms
             for (int i = 0; i < newData.Length; i++)
             {
                 WaveChart.Series["chartSeries"].Points.AddXY(i, newData[i]);
+                WaveChart.Series["chartSeries"].Points.ElementAt(i).Color = (i>x1 && i<x2) ? Color.Red: Color.Blue;
+
+
             }
         }
 
@@ -186,8 +193,7 @@ namespace _3931_Project_windows_forms
         }
 
         int mdown;
-        List<DataPoint> Highlighted;
-        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
+/*        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
         {
             double x1 = WaveChart.ChartAreas[0].CursorX.SelectionStart;
             double x2 = WaveChart.ChartAreas[0].CursorX.SelectionEnd;
@@ -206,13 +212,20 @@ namespace _3931_Project_windows_forms
                 wave.Color = Highlighted.Contains(wave) ? Color.Red : Color.Blue;
             }
             WaveChart.Refresh();
-        }
+        }*/
 
-        private void WaveChart_MouseDown(object sender, MouseEventArgs e)
+        private void chart_SelectionRangeChanged(object sender, CursorEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (!double.IsNaN(e.NewSelectionStart)&& !double.IsNaN(e.NewSelectionEnd))
             {
-                mdown = e.Location.X;
+                x1 = e.NewSelectionStart;
+                x2 = e.NewSelectionEnd;
+                Highlighted=new List<double>();
+                for (double i = x1; i <x2; i++)
+                {
+                    Highlighted.Add(waveData.ElementAt((int)i));
+                }
+                WaveChart.Refresh();
             }
         }
 
