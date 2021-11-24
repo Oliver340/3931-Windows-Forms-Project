@@ -4,7 +4,9 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Media;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using HINSTANCE = System.IntPtr;
@@ -85,7 +87,6 @@ namespace _3931_Project_windows_forms
 
             plotWaveform(newData);
             initWaveData(newData);
-
             //setSizePSaveBuffer(buffer.Length);
             //setPSaveBuffer(buffer, buffer.Length);
         }
@@ -100,9 +101,6 @@ namespace _3931_Project_windows_forms
         // Function to plot a wave
         private void plotWaveform(double[] newData)
         {
-            WaveChart.ChartAreas[0].CursorX.IsUserEnabled = true;
-            WaveChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
-            WaveChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
             WaveChart.Series["chartSeries"].Points.Clear();
             for (int i = 0; i < newData.Length; i++)
             {
@@ -113,6 +111,9 @@ namespace _3931_Project_windows_forms
         // Function to set the plot of wave display
         private void setPlot(double[] newData)
         {
+            WaveChart.ChartAreas[0].CursorX.IsUserEnabled = true;
+            WaveChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
+            WaveChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
             WaveChart.ChartAreas[0].AxisX.Minimum = 0;
             WaveChart.ChartAreas[0].AxisX.Maximum = Double.NaN;
             WaveChart.ChartAreas[0].AxisX.ScrollBar.Enabled = true;
@@ -240,6 +241,83 @@ namespace _3931_Project_windows_forms
 
             setPlot(waveData);
             plotWaveform(waveData);
+        }
+
+        // Cut Button
+        private void button4_Click(object sender, EventArgs e)
+        {
+            complex[] A = new complex[waveData.Length];
+            for (int i = 0; i < waveData.Length; i++)
+            {
+                A[i].re = waveData[i];
+                A[i].im = 0;
+            }
+            waveData = CopyPaste.Cut(A, 20000, 25000);
+            plotWaveform(waveData);
+        }
+
+        // Save Button
+        private void button5_Click(object sender, EventArgs e)
+        {
+            // Save file pop up
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "WAV File (*.wav)|*.wav|All files (*.*)|*.*";
+            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+            {
+                return;
+            }
+
+            // Binary Writer
+            BinaryWriter wr = new BinaryWriter(System.IO.File.OpenWrite(saveFileDialog.FileName));
+
+            //Header Bytes
+            int subChunk1Size = 16;
+            short audioFormat = 1;
+            short bitsPerSample = 8; // old -> 16
+            short numChannels = 2; // old -> 2
+            int sampleRate = 11025; // old -> 22050
+            int byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+            int numSamples = bufferWaveData.Length;
+            short blockAlign = (short)(numChannels * (bitsPerSample / 8));
+
+            int subChunk2Size = numSamples * numChannels * (bitsPerSample / 8);
+
+            int chunkSize = 4 + (8 + subChunk1Size) + (8 + subChunk2Size);
+
+            // Write header values
+            wr.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));
+            wr.Write(chunkSize);
+            wr.Write(System.Text.Encoding.ASCII.GetBytes("WAVE"));
+            wr.Write(System.Text.Encoding.ASCII.GetBytes("fmt"));
+            wr.Write((byte)32);
+            wr.Write(subChunk1Size);
+            wr.Write(audioFormat);
+            wr.Write(numChannels);
+            wr.Write(sampleRate);
+            wr.Write(byteRate);
+            wr.Write(blockAlign);
+            wr.Write(bitsPerSample);
+            wr.Write(System.Text.Encoding.ASCII.GetBytes("data"));
+            wr.Write(subChunk2Size);
+
+            //wr.Write(bufferWaveData);
+
+            for (int i = 0; i < numSamples; i++)
+            {
+                wr.Write(bufferWaveData[i]);
+                wr.Write(bufferWaveData[i]); // LEFT CHANNEL THEN RIGHT CHANNEL
+            }
+
+            wr.Close();
+            wr.Dispose();
+        }
+
+        // Play button
+        private void button6_Click(object sender, EventArgs e)
+        {
+            MemoryStream ms = new MemoryStream(bufferWaveData);
+            SoundPlayer myPlayer = new SoundPlayer(ms);
+            myPlayer.Play();
         }
     }
 }
