@@ -192,40 +192,48 @@ namespace _3931_Project_windows_forms
             start();
         }
 
-        int mdown;
-/*        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
-        {
-            double x1 = WaveChart.ChartAreas[0].CursorX.SelectionStart;
-            double x2 = WaveChart.ChartAreas[0].CursorX.SelectionEnd;
-            Highlighted = new List<DataPoint>();
-            Axis ax = WaveChart.ChartAreas[0].AxisX;
-            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
-            {
-                int x = (int)(ax.ValueToPixelPosition(wave.XValue)-94);
-                if ((x1 <= x && x <= x2) || (x2 <= x && x <= x1))
+        //int mdown;
+        /*        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
                 {
-                    Highlighted.Add(wave);
-                }
-            }
-            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
-            {
-                wave.Color = Highlighted.Contains(wave) ? Color.Red : Color.Blue;
-            }
-            WaveChart.Refresh();
-        }*/
+                    double x1 = WaveChart.ChartAreas[0].CursorX.SelectionStart;
+                    double x2 = WaveChart.ChartAreas[0].CursorX.SelectionEnd;
+                    Highlighted = new List<DataPoint>();
+                    Axis ax = WaveChart.ChartAreas[0].AxisX;
+                    foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
+                    {
+                        int x = (int)(ax.ValueToPixelPosition(wave.XValue)-94);
+                        if ((x1 <= x && x <= x2) || (x2 <= x && x <= x1))
+                        {
+                            Highlighted.Add(wave);
+                        }
+                    }
+                    foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
+                    {
+                        wave.Color = Highlighted.Contains(wave) ? Color.Red : Color.Blue;
+                    }
+                    WaveChart.Refresh();
+                }*/
 
         private void chart_SelectionRangeChanged(object sender, CursorEventArgs e)
         {
-            if (!double.IsNaN(e.NewSelectionStart)&& !double.IsNaN(e.NewSelectionEnd))
+            if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
             {
-                x1 = e.NewSelectionStart;
-                x2 = e.NewSelectionEnd;
-                Highlighted=new List<double>();
-                for (double i = x1; i <x2; i++)
+                if (e.NewSelectionStart < e.NewSelectionEnd)
+                {
+                    x1 = e.NewSelectionStart;
+                    x2 = e.NewSelectionEnd;
+                }
+                else
+                {
+                    x2 = e.NewSelectionStart;
+                    x1 = e.NewSelectionEnd;
+                }
+                Highlighted = new List<double>();
+                for (double i = x1; i < x2; i++)
                 {
                     Highlighted.Add(waveData.ElementAt((int)i));
                 }
-                WaveChart.Refresh();
+                plotWaveform(waveData);
             }
         }
 
@@ -253,6 +261,21 @@ namespace _3931_Project_windows_forms
 
             setPlot(waveData);
             plotWaveform(waveData);
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
