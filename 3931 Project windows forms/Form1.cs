@@ -35,13 +35,24 @@ namespace _3931_Project_windows_forms
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            for (int i = 0; i < 10; i++)
+            {
+                WaveChart.Series["ZeroSeries"].Points.AddXY(i, 0);
+                WaveChart.Series["ZeroSeries"].Points.ElementAt(i).Color = Color.Red;
+                WaveChart.ChartAreas[0].AxisY.Minimum = -50000;
+                WaveChart.ChartAreas[0].AxisY.Maximum = 50000;
+                WaveChart.ChartAreas[0].AxisX.Minimum = 0;
+                WaveChart.ChartAreas[0].AxisX.Maximum = i;
+            }
         }
 
         public double[] waveData;
         public double[] plottedWaveData;
         public byte[] bufferWaveData;
         public byte[] bufferPlottedWaveData;
+        double[] Highlighted;
+        double x1 = 0;
+        double x2 = 0;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -55,6 +66,7 @@ namespace _3931_Project_windows_forms
                 return;
             }
 
+            Highlighted = new double[0];
             BinaryReader binaryReader = new BinaryReader(System.IO.File.OpenRead(openFileDialog.FileName));
 
             //Initializing Header
@@ -101,10 +113,16 @@ namespace _3931_Project_windows_forms
         // Function to plot a wave
         private void plotWaveform(double[] newData)
         {
+            
+            WaveChart.Series["ZeroSeries"].Points.Clear();
             WaveChart.Series["chartSeries"].Points.Clear();
             for (int i = 0; i < newData.Length; i++)
             {
+                WaveChart.ChartAreas[0].AxisX.Maximum = i;
+                WaveChart.Series["ZeroSeries"].Points.AddXY(i, 0);
+                WaveChart.Series["ZeroSeries"].Points.ElementAt(i).Color = Color.Red;
                 WaveChart.Series["chartSeries"].Points.AddXY(i, newData[i]);
+                WaveChart.Series["chartSeries"].Points.ElementAt(i).Color = Color.Blue;
             }
         }
 
@@ -186,34 +204,48 @@ namespace _3931_Project_windows_forms
             start();
         }
 
-        int mdown;
-        List<DataPoint> Highlighted;
-        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
-        {
-            double x1 = WaveChart.ChartAreas[0].CursorX.SelectionStart;
-            double x2 = WaveChart.ChartAreas[0].CursorX.SelectionEnd;
-            Highlighted = new List<DataPoint>();
-            Axis ax = WaveChart.ChartAreas[0].AxisX;
-            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
-            {
-                int x = (int)(ax.ValueToPixelPosition(wave.XValue)-94);
-                if ((x1 <= x && x <= x2) || (x2 <= x && x <= x1))
+        //int mdown;
+        /*        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
                 {
-                    Highlighted.Add(wave);
-                }
-            }
-            foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
-            {
-                wave.Color = Highlighted.Contains(wave) ? Color.Red : Color.Blue;
-            }
-            WaveChart.Refresh();
-        }
+                    double x1 = WaveChart.ChartAreas[0].CursorX.SelectionStart;
+                    double x2 = WaveChart.ChartAreas[0].CursorX.SelectionEnd;
+                    Highlighted = new List<DataPoint>();
+                    Axis ax = WaveChart.ChartAreas[0].AxisX;
+                    foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
+                    {
+                        int x = (int)(ax.ValueToPixelPosition(wave.XValue)-94);
+                        if ((x1 <= x && x <= x2) || (x2 <= x && x <= x1))
+                        {
+                            Highlighted.Add(wave);
+                        }
+                    }
+                    foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
+                    {
+                        wave.Color = Highlighted.Contains(wave) ? Color.Red : Color.Blue;
+                    }
+                    WaveChart.Refresh();
+                }*/
 
-        private void WaveChart_MouseDown(object sender, MouseEventArgs e)
+        //function to control what selection area does
+        private void chart_SelectionRangeChanged(object sender, CursorEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
             {
-                mdown = e.Location.X;
+                if (e.NewSelectionStart < e.NewSelectionEnd)
+                {
+                    x1 = e.NewSelectionStart;
+                    x2 = e.NewSelectionEnd;
+                }
+                else
+                {
+                    x2 = e.NewSelectionStart;
+                    x1 = e.NewSelectionEnd;
+                }
+                Highlighted = new double[(int)(x2-x1)];
+                for (double i = x1; i < x2; i++)
+                {
+                    Highlighted[(int)(i-x1)]=waveData[(int)i];
+                }
             }
         }
 
@@ -243,21 +275,26 @@ namespace _3931_Project_windows_forms
             plotWaveform(waveData);
         }
 
-        // Cut Button
+        //Cut button
+        private void button6_Click(object sender, EventArgs e)
+        {
+            plotWaveform(CopyPaste.Cut(waveData, Highlighted, x1, x2));
+        }
+
+        //Copy button
         private void button4_Click(object sender, EventArgs e)
         {
-            complex[] A = new complex[waveData.Length];
-            for (int i = 0; i < waveData.Length; i++)
-            {
-                A[i].re = waveData[i];
-                A[i].im = 0;
-            }
-            waveData = CopyPaste.Cut(A, 20000, 25000);
-            plotWaveform(waveData);
+            CopyPaste.Copy(Highlighted);
+        }
+
+        //Paste button
+        private void button5_Click(object sender, EventArgs e)
+        {
+            plotWaveform(CopyPaste.Paste(waveData, x1));
         }
 
         // Save Button
-        private void button5_Click(object sender, EventArgs e)
+        private void button7_Click(object sender, EventArgs e)
         {
             // Save file pop up
             SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -310,14 +347,6 @@ namespace _3931_Project_windows_forms
 
             wr.Close();
             wr.Dispose();
-        }
-
-        // Play button
-        private void button6_Click(object sender, EventArgs e)
-        {
-            MemoryStream ms = new MemoryStream(bufferWaveData);
-            SoundPlayer myPlayer = new SoundPlayer(ms);
-            myPlayer.Play();
         }
     }
 }
