@@ -32,9 +32,10 @@ namespace _3931_Project_windows_forms
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.WaveChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
@@ -65,19 +66,29 @@ namespace _3931_Project_windows_forms
             this.WaveChart.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            chartArea4.Name = "ChartArea1";
-            this.WaveChart.ChartAreas.Add(chartArea4);
-            legend4.Enabled = false;
-            legend4.Name = "Legend1";
-            this.WaveChart.Legends.Add(legend4);
+            chartArea1.AlignmentOrientation = System.Windows.Forms.DataVisualization.Charting.AreaAlignmentOrientations.Horizontal;
+            chartArea1.AxisX.ScaleView.MinSize = 0D;
+            chartArea1.AxisX2.ScaleView.MinSize = 0D;
+            chartArea1.Name = "ChartArea1";
+            this.WaveChart.ChartAreas.Add(chartArea1);
+            legend1.Enabled = false;
+            legend1.Name = "Legend1";
+            this.WaveChart.Legends.Add(legend1);
             this.WaveChart.Location = new System.Drawing.Point(18, 64);
             this.WaveChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.WaveChart.Name = "WaveChart";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Legend = "Legend1";
-            series4.Name = "chartSeries";
-            this.WaveChart.Series.Add(series4);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "chartSeries";
+            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "ZeroSeries";
+            this.WaveChart.SelectionRangeChanged += chart_SelectionRangeChanged;
+            this.WaveChart.Series.Add(series1);
+            this.WaveChart.Series.Add(series2);
             this.WaveChart.Size = new System.Drawing.Size(1412, 612);
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";

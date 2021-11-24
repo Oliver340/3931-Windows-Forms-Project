@@ -33,14 +33,22 @@ namespace _3931_Project_windows_forms
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            for (int i = 0; i < 10; i++)
+            {
+                WaveChart.Series["ZeroSeries"].Points.AddXY(i, 0);
+                WaveChart.Series["ZeroSeries"].Points.ElementAt(i).Color = Color.Red;
+                WaveChart.ChartAreas[0].AxisY.Minimum = -50000;
+                WaveChart.ChartAreas[0].AxisY.Maximum = 50000;
+                WaveChart.ChartAreas[0].AxisX.Minimum = 0;
+                WaveChart.ChartAreas[0].AxisX.Maximum = i;
+            }
         }
 
         public double[] waveData;
         public double[] plottedWaveData;
         public byte[] bufferWaveData;
         public byte[] bufferPlottedWaveData;
-        List<double> Highlighted;
+        double[] Highlighted;
         double x1 = 0;
         double x2 = 0;
 
@@ -56,7 +64,7 @@ namespace _3931_Project_windows_forms
                 return;
             }
 
-            Highlighted = new List<double>();
+            Highlighted = new double[0];
             BinaryReader binaryReader = new BinaryReader(System.IO.File.OpenRead(openFileDialog.FileName));
 
             //Initializing Header
@@ -107,13 +115,15 @@ namespace _3931_Project_windows_forms
             WaveChart.ChartAreas[0].CursorX.IsUserEnabled = true;
             WaveChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
             WaveChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
+            WaveChart.Series["ZeroSeries"].Points.Clear();
             WaveChart.Series["chartSeries"].Points.Clear();
             for (int i = 0; i < newData.Length; i++)
             {
+                WaveChart.ChartAreas[0].AxisX.Maximum = i;
+                WaveChart.Series["ZeroSeries"].Points.AddXY(i, 0);
+                WaveChart.Series["ZeroSeries"].Points.ElementAt(i).Color = Color.Red;
                 WaveChart.Series["chartSeries"].Points.AddXY(i, newData[i]);
-                WaveChart.Series["chartSeries"].Points.ElementAt(i).Color = (i>x1 && i<x2) ? Color.Red: Color.Blue;
-
-
+                WaveChart.Series["chartSeries"].Points.ElementAt(i).Color = Color.Blue;
             }
         }
 
@@ -214,6 +224,7 @@ namespace _3931_Project_windows_forms
                     WaveChart.Refresh();
                 }*/
 
+        //function to control what selection area does
         private void chart_SelectionRangeChanged(object sender, CursorEventArgs e)
         {
             if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
@@ -228,12 +239,11 @@ namespace _3931_Project_windows_forms
                     x2 = e.NewSelectionStart;
                     x1 = e.NewSelectionEnd;
                 }
-                Highlighted = new List<double>();
+                Highlighted = new double[(int)(x2-x1)];
                 for (double i = x1; i < x2; i++)
                 {
-                    Highlighted.Add(waveData.ElementAt((int)i));
+                    Highlighted[(int)(i-x1)]=waveData[(int)i];
                 }
-                plotWaveform(waveData);
             }
         }
 
@@ -263,19 +273,22 @@ namespace _3931_Project_windows_forms
             plotWaveform(waveData);
         }
 
+        //Cut button
         private void button6_Click(object sender, EventArgs e)
         {
-
+            plotWaveform(CopyPaste.Cut(waveData, Highlighted, x1, x2));
         }
 
+        //Copy button
         private void button4_Click(object sender, EventArgs e)
         {
-
+            CopyPaste.Copy(Highlighted);
         }
 
+        //Paste button
         private void button5_Click(object sender, EventArgs e)
         {
-
+            plotWaveform(CopyPaste.Paste(waveData, x1));
         }
     }
 }

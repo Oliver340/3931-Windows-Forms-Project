@@ -2,7 +2,6 @@ C:\Users\dylan\Source\Repos\3931-Windows-Forms-Project\3931 Project windows form
 C:\Users\dylan\Source\Repos\3931-Windows-Forms-Project\3931 Project windows forms\bin\Debug\3931 Project windows forms.exe
 C:\Users\dylan\Source\Repos\3931-Windows-Forms-Project\3931 Project windows forms\bin\Debug\3931 Project windows forms.pdb
 C:\Users\dylan\Source\Repos\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.csproj.AssemblyReference.cache
-C:\Users\dylan\Source\Repos\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.csproj.SuggestedBindingRedirects.cache
 C:\Users\dylan\Source\Repos\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\_3931_Project_windows_forms.Form1.resources
 C:\Users\dylan\Source\Repos\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\_3931_Project_windows_forms.Properties.Resources.resources
 C:\Users\dylan\Source\Repos\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\3931 Project windows forms.csproj.GenerateResource.cache

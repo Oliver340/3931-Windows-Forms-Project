@@ -1,70 +1,82 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace _3931_Project_windows_forms
 {
     internal class CopyPaste
     {
-        public static double[] Copy(complex[] a, int start, int end)
+        public static void Copy(double[] copy)
         {
-            if (start > end)
-            {
-                int temp = start;
-                start = end;
-                end = temp;
-            }
-            complex[] complices= new complex[end-start];
-            for (int i = start; i < end; i++)
-            {
-                complices[i-start] = a[i];
-            }
-            return Fourier.inverseDFT(complices, complices.Length);
+            byte[] copyBytes = new byte[copy.Length*sizeof(double)];
+            Buffer.BlockCopy(copy, 0, copyBytes, 0, copyBytes.Length);
+            Clipboard.SetAudio(copyBytes);
         }
-        public static complex[] Paste(complex[] a, double[] s, int location)
+        public static double[] Paste(double[] original, double location)
         {
-            complex[] clipboard = Fourier.DFT(s, s.Length);
-            complex[] newWave = new complex[a.Length + clipboard.Length];
+            if (!Clipboard.ContainsAudio())
+            {
+                return original;
+            }
+            BinaryReader binaryReader = new BinaryReader(Clipboard.GetAudioStream());
+
+            //Initializing Header
+            WavReader waveReader = new WavReader(
+                binaryReader.ReadInt32(),
+                binaryReader.ReadInt32(),
+                binaryReader.ReadInt32(),
+                binaryReader.ReadInt32(),
+                binaryReader.ReadInt32(),
+                binaryReader.ReadInt16(),
+                binaryReader.ReadInt16(),
+                binaryReader.ReadInt32(),
+                binaryReader.ReadInt32(),
+                binaryReader.ReadInt16(),
+                binaryReader.ReadInt16(),
+                binaryReader.ReadInt32(),
+                binaryReader.ReadInt32()
+                );
+            byte[] buffer = binaryReader.ReadBytes(waveReader.getSubChunk2Size());
+            int bufferLength = (buffer.Length / waveReader.getBlockAlign());
+
+            double[] newWave = new double[original.Length + bufferLength];
+
             for (int i = 0; i < newWave.Length; i++)
             {
-                if (i < location)
+                if (i<(int)location)
                 {
-                    newWave[i] = a[i];
-                }
-                else if (i < location + clipboard.Length)
+                    newWave[i] = original[i];
+                } else if (i<(int)location + bufferLength)
                 {
-                    newWave[i] = clipboard[i - location];
-                }
-                else
+                    newWave[i] = BitConverter.ToInt16(buffer, waveReader.getBlockAlign() * i);
+                } else
                 {
-                    newWave[i] = a[i - location];
+                    newWave[i] = original[i - bufferLength];
                 }
             }
             return newWave;
         }
 
-        public static double[] Cut(complex[] a, int start, int end)
+        public static double[] Cut(double[] original, double[] selection, double x1, double x2)
         {
-            double[] clipboard = Copy(a, start, end);
-            complex[] newA = new complex[a.Length - end + start];
-            for (int i = 0; i < a.Length; i++)
+            Copy(selection);
+            double[] newWave = new double[original.Length - selection.Length];
+            for (int i = 0; i < newWave.Length; i++)
             {
-                while (i > start && i < end)
+                if (i < x1)
                 {
-                    i++;
+                    newWave[i] = original[i];
                 }
-                if (i < end)
+                else if (i > x2)
                 {
-                    newA[i] = a[i];
-                } else
-                {
-                    newA[i-end+start] = a[i];
+                    newWave[i + (int)(x1 - x2)] = original[i];
                 }
             }
-            a = newA;
-            return clipboard;
+            return newWave;
         }
     }
 }
