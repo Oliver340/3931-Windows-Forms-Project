@@ -76,6 +76,7 @@ namespace _3931_Project_windows_forms
             chartArea1.AxisX2.ScaleView.MinSize = 0D;
             chartArea1.Name = "ChartArea1";
             this.WaveChart.ChartAreas.Add(chartArea1);
+            this.WaveChart.SelectionRangeChanged += chart_SelectionRangeChanged;
             legend1.Enabled = false;
             legend1.Name = "Legend1";
             this.WaveChart.Legends.Add(legend1);
@@ -136,6 +137,7 @@ namespace _3931_Project_windows_forms
             this.button5.TabIndex = 8;
             this.button5.Text = "Paste";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -146,6 +148,7 @@ namespace _3931_Project_windows_forms
             this.button6.TabIndex = 9;
             this.button6.Text = "Cut";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 

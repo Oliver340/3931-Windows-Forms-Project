@@ -59,6 +59,7 @@ namespace _3931_Project_windows_forms
             start();
         }
 
+        public double[] copied;
         WavReader waveReader;
         public double[] waveData;
         public double[] plottedWaveData;
@@ -312,19 +313,23 @@ namespace _3931_Project_windows_forms
         //Cut button
         private void button6_Click(object sender, EventArgs e)
         {
-            plotWaveform(CopyPaste.Cut(waveData, Highlighted, x1, x2));
+            copied = Highlighted;
+            waveData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
+            plotWaveform(waveData);
         }
 
         //Copy button
         private void button4_Click(object sender, EventArgs e)
         {
-            CopyPaste.Copy(Highlighted);
+            //CopyPaste.Copy(Highlighted);
+            copied = Highlighted;
         }
 
         //Paste button
         private void button5_Click(object sender, EventArgs e)
         {
-            plotWaveform(CopyPaste.Paste(waveData, x1));
+            waveData=CopyPaste.Paste(waveData, copied, x1, x2);
+            plotWaveform(waveData);
         }
 
         // Save Button
@@ -445,6 +450,10 @@ namespace _3931_Project_windows_forms
         private void button11_Click(object sender, EventArgs e)
         {
             int fcut = Int32.Parse(textBox1.Text);
+            if (fcut < 1)
+            {
+                fcut = 100;
+            }
             int sampleRate = 1000;
             int filterSize = 16;
             int numberOfSamples = 100;
