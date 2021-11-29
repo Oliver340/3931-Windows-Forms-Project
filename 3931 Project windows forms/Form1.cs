@@ -46,6 +46,7 @@ namespace _3931_Project_windows_forms
             }
         }
 
+        public double[] copied;
         public double[] waveData;
         public double[] plottedWaveData;
         public byte[] bufferWaveData;
@@ -278,19 +279,23 @@ namespace _3931_Project_windows_forms
         //Cut button
         private void button6_Click(object sender, EventArgs e)
         {
-            plotWaveform(CopyPaste.Cut(waveData, Highlighted, x1, x2));
+            copied = Highlighted;
+            waveData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
+            plotWaveform(waveData);
         }
 
         //Copy button
         private void button4_Click(object sender, EventArgs e)
         {
-            CopyPaste.Copy(Highlighted);
+            //CopyPaste.Copy(Highlighted);
+            copied = Highlighted;
         }
 
         //Paste button
         private void button5_Click(object sender, EventArgs e)
         {
-            plotWaveform(CopyPaste.Paste(waveData, x1));
+            waveData=CopyPaste.Paste(waveData, copied, x1, x2);
+            plotWaveform(waveData);
         }
 
         // Save Button

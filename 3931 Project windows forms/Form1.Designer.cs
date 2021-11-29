@@ -85,6 +85,7 @@ namespace _3931_Project_windows_forms
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series4.Legend = "Legend1";
             series4.Name = "ZeroSeries";
+            this.WaveChart.SelectionRangeChanged += chart_SelectionRangeChanged;
             this.WaveChart.Series.Add(series3);
             this.WaveChart.Series.Add(series4);
             this.WaveChart.Size = new System.Drawing.Size(941, 392);
@@ -153,6 +154,7 @@ namespace _3931_Project_windows_forms
             this.button5.TabIndex = 8;
             this.button5.Text = "Paste";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -163,6 +165,7 @@ namespace _3931_Project_windows_forms
             this.button6.TabIndex = 9;
             this.button6.Text = "Cut";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button7
             // 

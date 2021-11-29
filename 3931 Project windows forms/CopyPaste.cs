@@ -16,9 +16,9 @@ namespace _3931_Project_windows_forms
             Buffer.BlockCopy(copy, 0, copyBytes, 0, copyBytes.Length);
             Clipboard.SetAudio(copyBytes);
         }
-        public static double[] Paste(double[] original, double location)
+        public static double[] Paste(double[] original, double[] copied, double x1, double x2)
         {
-            if (!Clipboard.ContainsAudio())
+/*            if (!Clipboard.ContainsAudio())
             {
                 return original;
             }
@@ -41,21 +41,21 @@ namespace _3931_Project_windows_forms
                 binaryReader.ReadInt32()
                 );
             byte[] buffer = binaryReader.ReadBytes(waveReader.getSubChunk2Size());
-            int bufferLength = (buffer.Length / waveReader.getBlockAlign());
+            int bufferLength = (buffer.Length / waveReader.getBlockAlign());*/
 
-            double[] newWave = new double[original.Length + bufferLength];
+            double[] newWave = new double[original.Length + copied.Length];
 
             for (int i = 0; i < newWave.Length; i++)
             {
-                if (i<(int)location)
+                if (i<(int)x1)
                 {
                     newWave[i] = original[i];
-                } else if (i<(int)location + bufferLength)
+                } else if (i<(int)x1+copied.Length)
                 {
-                    newWave[i] = BitConverter.ToInt16(buffer, waveReader.getBlockAlign() * i);
-                } else
+                    newWave[i] = copied[i-(int)x1];
+                } if (i >= x2 && i < original.Length)
                 {
-                    newWave[i] = original[i - bufferLength];
+                    newWave[i+copied.Length-(int)(x2-x1)] = original[i];
                 }
             }
             return newWave;
@@ -63,7 +63,7 @@ namespace _3931_Project_windows_forms
 
         public static double[] Cut(double[] original, double[] selection, double x1, double x2)
         {
-            Copy(selection);
+            //Copy(selection);
             double[] newWave = new double[original.Length - selection.Length];
             for (int i = 0; i < newWave.Length; i++)
             {
