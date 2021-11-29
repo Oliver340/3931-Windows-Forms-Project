@@ -7,6 +7,7 @@ using System.Linq;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using HINSTANCE = System.IntPtr;
@@ -14,7 +15,7 @@ using HINSTANCE = System.IntPtr;
 namespace _3931_Project_windows_forms
 {
 
-    public partial class Form1 : Form
+    public unsafe partial class Form1 : Form
     {
         //double x1 = 0;
         //double x2 = 0;
@@ -25,9 +26,19 @@ namespace _3931_Project_windows_forms
         [DllImport("RecordDLL.dll")]
         public static extern uint getSizePSaveBuffer();
         [DllImport("RecordDLL.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void setPSaveBuffer(byte[] values, int length);
+        public static extern void setPSaveBuffer(byte* values, int length, int samplesPerSec, short blockAlign, short bitsPerSample);
         [DllImport("RecordDLL.dll")]
         public static extern void setSizePSaveBuffer(int length);
+        [DllImport("RecordDLL.dll")]
+        public static extern void recordData();
+        [DllImport("RecordDLL.dll")]
+        public static extern void stopRecordData();
+        [DllImport("RecordDLL.dll")]
+        public static extern void playData();
+        [DllImport("RecordDLL.dll")]
+        public static extern void pauseData();
+        [DllImport("RecordDLL.dll")]
+        public static extern void stopPlayData();
 
         public Form1()
         {
@@ -44,8 +55,11 @@ namespace _3931_Project_windows_forms
                 WaveChart.ChartAreas[0].AxisX.Minimum = 0;
                 WaveChart.ChartAreas[0].AxisX.Maximum = i;
             }
+            // Start the DLL
+            start();
         }
 
+        WavReader waveReader;
         public double[] waveData;
         public double[] plottedWaveData;
         public byte[] bufferWaveData;
@@ -70,7 +84,7 @@ namespace _3931_Project_windows_forms
             BinaryReader binaryReader = new BinaryReader(System.IO.File.OpenRead(openFileDialog.FileName));
 
             //Initializing Header
-            WavReader waveReader = new WavReader(
+            waveReader = new WavReader(
                 binaryReader.ReadInt32(),
                 binaryReader.ReadInt32(),
                 binaryReader.ReadInt32(),
@@ -95,12 +109,16 @@ namespace _3931_Project_windows_forms
                 newData[i] = BitConverter.ToInt16(buffer, waveReader.getBlockAlign() * i);
             }
 
-            setPlot(newData);
-
-            plotWaveform(newData);
             initWaveData(newData);
-            //setSizePSaveBuffer(buffer.Length);
-            //setPSaveBuffer(buffer, buffer.Length);
+            initBufferData(buffer);
+
+            setPlot(newData);
+            plotWaveform(newData);
+
+            fixed (byte* array = bufferWaveData)
+            {
+                setPSaveBuffer(array, bufferWaveData.Length, waveReader.getSamplesPerSecond(), waveReader.getBlockAlign(), waveReader.getBitsPerSample());
+            }
         }
 
         // Function to initialize the display wave data
@@ -110,32 +128,86 @@ namespace _3931_Project_windows_forms
             plottedWaveData = new double[waveData.Length];
         }
 
+        // Function to initialize the buffer wave data
+        private void initBufferData(byte[] buffer)
+        {
+            bufferWaveData = buffer;
+            bufferPlottedWaveData = new byte[bufferWaveData.Length];
+        }
+
         // Function to plot a wave
         private void plotWaveform(double[] newData)
         {
             
             WaveChart.Series["ZeroSeries"].Points.Clear();
             WaveChart.Series["chartSeries"].Points.Clear();
-            for (int i = 0; i < newData.Length; i++)
+            int scrollStart = hScrollBar1.Value;
+            int scrollEnd = (int) WaveChart.ChartAreas[0].AxisX.ScaleView.Size + scrollStart;
+            int index = 0;
+            for (int i = scrollStart; i < scrollEnd && i < newData.Length; i++)
             {
-                WaveChart.ChartAreas[0].AxisX.Maximum = i;
-                WaveChart.Series["ZeroSeries"].Points.AddXY(i, 0);
-                WaveChart.Series["ZeroSeries"].Points.ElementAt(i).Color = Color.Red;
-                WaveChart.Series["chartSeries"].Points.AddXY(i, newData[i]);
-                WaveChart.Series["chartSeries"].Points.ElementAt(i).Color = Color.Blue;
+                WaveChart.ChartAreas[0].AxisX.Maximum = index;
+                WaveChart.Series["ZeroSeries"].Points.AddXY(index, 0);
+                WaveChart.Series["ZeroSeries"].Points.ElementAt(index).Color = Color.Red;
+                WaveChart.Series["chartSeries"].Points.AddXY(index, newData[i]);
+                WaveChart.Series["chartSeries"].Points.ElementAt(index).Color = Color.Blue;
+                index++;
+            }
+        }
+
+        // Horizontal ScrollBar
+        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (WaveChart.ChartAreas[0].AxisX.ScaleView.Size + hScrollBar1.Value < waveData.Length)
+            {
+                plotWaveform(waveData);
+            }
+        }
+
+        // Mouse scroll zoom
+        private void chart1_MouseWheel(object sender, MouseEventArgs e)
+        {
+            int initSize = (int)WaveChart.ChartAreas[0].AxisX.ScaleView.Size;
+            if (WaveChart.ChartAreas[0].AxisX.ScaleView.Size - e.Delta > 0 && WaveChart.ChartAreas[0].AxisX.ScaleView.Size - e.Delta < waveData.Length
+                && WaveChart.ChartAreas[0].AxisX.ScaleView.Size - e.Delta + hScrollBar1.Value < waveData.Length)
+            {
+                WaveChart.ChartAreas[0].AxisX.ScaleView.Size -= e.Delta;
+                if (WaveChart.ChartAreas[0].AxisX.ScaleView.Size > initSize)
+                {
+                    for (int i = initSize; i < WaveChart.ChartAreas[0].AxisX.ScaleView.Size && i + hScrollBar1.Value < waveData.Length; i++)
+                    {
+                        WaveChart.ChartAreas[0].AxisX.Maximum = i;
+                        WaveChart.Series["ZeroSeries"].Points.AddXY(i, 0);
+                        WaveChart.Series["ZeroSeries"].Points.ElementAt(i).Color = Color.Red;
+                        WaveChart.Series["chartSeries"].Points.AddXY(i, waveData[i + hScrollBar1.Value]);
+                        WaveChart.Series["chartSeries"].Points.ElementAt(i).Color = Color.Blue;
+                    }
+                } else
+                {
+                    for (int i = initSize - 1; i >= (int)WaveChart.ChartAreas[0].AxisX.ScaleView.Size; i--)
+                    {
+                        WaveChart.Series["ZeroSeries"].Points.RemoveAt(i);
+                        WaveChart.Series["chartSeries"].Points.RemoveAt(i);
+                        WaveChart.ChartAreas[0].AxisX.ScrollBar.Enabled = false;
+                    }
+                }
+                hScrollBar1.Maximum = waveData.Length - (int)WaveChart.ChartAreas[0].AxisX.ScaleView.Size;
             }
         }
 
         // Function to set the plot of wave display
         private void setPlot(double[] newData)
         {
+            hScrollBar1.Value = 0;
             WaveChart.ChartAreas[0].CursorX.IsUserEnabled = true;
             WaveChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
             WaveChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
             WaveChart.ChartAreas[0].AxisX.Minimum = 0;
             WaveChart.ChartAreas[0].AxisX.Maximum = Double.NaN;
-            WaveChart.ChartAreas[0].AxisX.ScrollBar.Enabled = true;
-            WaveChart.ChartAreas[0].AxisX.ScaleView.Size = newData.Length / (vScrollBar1.Value + 1);
+            //WaveChart.ChartAreas[0].AxisX.ScrollBar.Enabled = true;
+            //WaveChart.ChartAreas[0].AxisX.ScrollBar.Axis.Maximum = newData.Length;
+            WaveChart.ChartAreas[0].AxisX.ScaleView.Size = 100;
+            hScrollBar1.Maximum = newData.Length - (int)WaveChart.ChartAreas[0].AxisX.ScaleView.Size;
             if (newData.Min() > newData.Max())
             {
                 WaveChart.ChartAreas[0].AxisY.Minimum = newData.Min();
@@ -152,6 +224,7 @@ namespace _3931_Project_windows_forms
             trackBar1.Minimum = 0;
             trackBar1.Maximum = 11;
             trackBar1.Value = 5;
+            this.WaveChart.MouseWheel += chart1_MouseWheel;
         }
 
         // Volume Track Bar
@@ -185,23 +258,10 @@ namespace _3931_Project_windows_forms
             {
                 amplitudes[i] = (byte)Math.Min(Math.Max(originalAmplitudes[i] * change, 0), 255);
             }
-            setPSaveBuffer(amplitudes, amplitudes.Length);
-        }
-
-        // Vertical Scroll Bar
-        private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
-        {
-            if (waveData != null)
-            {
-                WaveChart.ResetAutoValues();
-                WaveChart.ChartAreas[0].AxisX.ScaleView.Size = waveData.Length / (vScrollBar1.Value + 1);
-            }
-        }
-
-        // Record Button
-        private void button2_Click(object sender, EventArgs e)
-        {
-            start();
+            //fixed (byte* bytePtr = amplitudes)
+            //{
+            //    setPSaveBuffer(bytePtr, amplitudes.Length, waveReader.getSamplesPerSecond(), waveReader.getBlockAlign(), waveReader.getBitsPerSample());
+            //}
         }
 
         //int mdown;
@@ -249,32 +309,6 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Load Button
-        private unsafe void button3_Click(object sender, EventArgs e)
-        {
-            byte* pSaveBuffer = (byte*)getPSaveBuffer();
-            uint sizePBuffer = getSizePSaveBuffer();
-            byte[] buffer = new byte[sizePBuffer];
-            for (int i = 0; i < sizePBuffer; i++)
-            {
-                buffer[i] = *(pSaveBuffer + i * sizeof(byte));
-            }
-
-            double[] newData = new double[buffer.Length];
-            for (int i = 0; i < newData.Length; i++)
-            {
-                newData[i] = buffer[i];
-                newData[i] -= 128;
-            }
-
-            initWaveData(newData);
-            bufferWaveData = buffer;
-            bufferPlottedWaveData = new byte[bufferWaveData.Length];
-
-            setPlot(waveData);
-            plotWaveform(waveData);
-        }
-
         //Cut button
         private void button6_Click(object sender, EventArgs e)
         {
@@ -308,18 +342,26 @@ namespace _3931_Project_windows_forms
             BinaryWriter wr = new BinaryWriter(System.IO.File.OpenWrite(saveFileDialog.FileName));
 
             //Header Bytes
-            int subChunk1Size = 16;
-            short audioFormat = 1;
-            short bitsPerSample = 8; // old -> 16
-            short numChannels = 2; // old -> 2
-            int sampleRate = 11025; // old -> 22050
-            int byteRate = sampleRate * numChannels * (bitsPerSample / 8);
+            int subChunk1Size = waveReader.getSubChunk1Size();
+            Console.WriteLine("subchunk1size" + subChunk1Size);
+            short audioFormat = waveReader.getAudioFormat();
+            Console.WriteLine("audioformat" + audioFormat);
+            short bitsPerSample = waveReader.getBitsPerSample();
+            Console.WriteLine("bitspersample" + bitsPerSample);
+            short numChannels = waveReader.getNumChannels();
+            Console.WriteLine("numchannels" + numChannels);
+            int sampleRate = waveReader.getSampleRate();
+            Console.WriteLine("samplerate" + sampleRate);
+            int byteRate = waveReader.getByteRate();
+            Console.WriteLine("byterate" + byteRate);
             int numSamples = bufferWaveData.Length;
-            short blockAlign = (short)(numChannels * (bitsPerSample / 8));
-
-            int subChunk2Size = numSamples * numChannels * (bitsPerSample / 8);
-
-            int chunkSize = 4 + (8 + subChunk1Size) + (8 + subChunk2Size);
+            Console.WriteLine("numsaples" + numSamples);
+            short blockAlign = waveReader.getBlockAlign();
+            Console.WriteLine("blockalign" + blockAlign);
+            int subChunk2Size = waveReader.getSubChunk2Size();
+            Console.WriteLine("subchunk2size" + subChunk2Size);
+            int chunkSize = waveReader.getChunkSize();
+            Console.WriteLine("chunksize" + chunkSize);
 
             // Write header values
             wr.Write(System.Text.Encoding.ASCII.GetBytes("RIFF"));
@@ -337,16 +379,113 @@ namespace _3931_Project_windows_forms
             wr.Write(System.Text.Encoding.ASCII.GetBytes("data"));
             wr.Write(subChunk2Size);
 
-            //wr.Write(bufferWaveData);
-
             for (int i = 0; i < numSamples; i++)
             {
                 wr.Write(bufferWaveData[i]);
-                wr.Write(bufferWaveData[i]); // LEFT CHANNEL THEN RIGHT CHANNEL
             }
 
             wr.Close();
             wr.Dispose();
         }
-    }
+
+        // Play button
+        private void button8_Click(object sender, EventArgs e)
+        {
+            playData();
+        }
+
+        // Record Button
+        private void button2_Click(object sender, EventArgs e)
+        {
+            recordData();
+        }
+
+        // Stop Recording Button
+        private void button3_Click(object sender, EventArgs e)
+        {
+            stopRecordData();
+
+            byte* pSaveBuffer = (byte*)getPSaveBuffer();
+            uint sizePBuffer = getSizePSaveBuffer();
+            byte[] buffer = new byte[sizePBuffer];
+            for (int i = 0; i < sizePBuffer; i++)
+            {
+                buffer[i] = *(pSaveBuffer + i * sizeof(byte));
+            }
+
+            double[] newData = new double[buffer.Length];
+            for (int i = 0; i < newData.Length; i++)
+            {
+                newData[i] = buffer[i];
+                newData[i] -= 128;
+            }
+
+            initWaveData(newData);
+            initBufferData(buffer);
+
+            setPlot(waveData);
+            plotWaveform(waveData);
+
+            waveReader = new WavReader(0, newData.Length + 36, 0, 0, 16, 1, 1, 44100, 88200, 2, 8, 0, newData.Length);
+        }
+
+        // Pause Button
+        private void button9_Click(object sender, EventArgs e)
+        {
+            pauseData();
+        }
+
+        // Stop PlayBack Button
+        private void button10_Click(object sender, EventArgs e)
+        {
+            stopPlayData();
+        }
+
+        // Button to filter using low pass
+        private void button11_Click(object sender, EventArgs e)
+        {
+            int fcut = Int32.Parse(textBox1.Text);
+            int sampleRate = 1000;
+            int filterSize = 16;
+            int numberOfSamples = 100;
+
+            complex[] filter = Filtering.lowPassFilter(filterSize, fcut, sampleRate);
+            double[] fw = Fourier.inverseDFT(filter, filterSize);
+
+            double[] selectedSamples = new double[numberOfSamples];
+            int startSelect = 50;
+            for (int i = startSelect; i < startSelect + numberOfSamples; i++)
+            {
+                selectedSamples[i - startSelect] = waveData[i];
+            }
+            double[] filteredSamples = Filtering.convolution(fw, selectedSamples);
+            initWaveData(filteredSamples);
+            setPlot(filteredSamples);
+            plotWaveform(filteredSamples);
+
+
+            for (int i = 0; i < filter.Length; i++)
+            {
+                Console.WriteLine(filter[i].re);
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < fw.Length; i++)
+            {
+                Console.WriteLine(fw[i]);
+            }
+            Console.WriteLine("\n");
+            for (int i = 0; i < filteredSamples.Length; i++)
+            {
+                Console.WriteLine(filteredSamples[i]);
+            }
+        }
+
+        // DFT
+        //complex[] A = Fourier.DFT(waveData, waveData.Length);
+        //for (int i = 0; i<A.Length; i++)
+        //{
+        //    waveData[i] = (A[i].im* A[i].im) + (A[i].re* A[i].re);
+        //}
+        //plotWaveform(waveData);
+}
 }

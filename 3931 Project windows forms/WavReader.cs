@@ -49,6 +49,47 @@ namespace _3931_Project_windows_forms
             return blockAlign;
         }
 
+        public int getSamplesPerSecond()
+        {
+            return sampleRate;
+        }
+
+        public short getBitsPerSample()
+        {
+            return bitsPerSample;
+        }
+
+
+
+        public int getSubChunk1Size()
+        {
+            return subChunk1Size;
+        }
+
+        public short getAudioFormat()
+        {
+            return audioFormat;
+        }
+
+        public short getNumChannels()
+        {
+            return numChannels;
+        }
+
+        public int getSampleRate()
+        {
+            return sampleRate;
+        }
+
+        public int getByteRate()
+        {
+            return byteRate;
+        }
+
+        public int getChunkSize()
+        {
+            return chunkSize;
+        }
 
     }
 }

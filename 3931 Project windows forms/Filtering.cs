@@ -11,8 +11,7 @@ namespace _3931_Project_windows_forms
         public static double[] convolution(double[] fw, double[] s)
         {
             double sum;
-            int difference = s.Length % fw.Length;
-            int sizeOfSamplesWithZero = s.Length + difference + 1;
+            int sizeOfSamplesWithZero = s.Length + fw.Length;
             double[] newSamples = new double[sizeOfSamplesWithZero];
             for (int i = 0; i < sizeOfSamplesWithZero; i++)
             {
@@ -30,9 +29,41 @@ namespace _3931_Project_windows_forms
                 {
                     sum += newSamples[i + j] * fw[j];
                 }
-                s[i] = sum;
+                s[i] = sum / fw.Length;
             }
             return s;
+        }
+
+        public static complex[] lowPassFilter(int filterSize, int fcut, int sampleRate)
+        {
+            int amountOfOnes = (int)Math.Floor((double)(fcut * filterSize / sampleRate));
+
+            complex[] filter = new complex[filterSize];
+            filter[0].re = 1;
+            for (int i = 1; i < amountOfOnes + 1; i++)
+            {
+                filter[i].re = 1;
+                filter[i].im = 0;
+            }
+            for (int i = filterSize - 1; i >= filterSize - amountOfOnes; i--)
+            {
+                filter[i].re = 1;
+                filter[i].im = 0;
+            }
+            return filter;
+        }
+
+        public static complex[] highPassFilter(int filterSize, int fcut, int sampleRate)
+        {
+            int amountOfOnes = (int)Math.Ceiling((double)(fcut * filterSize / sampleRate));
+
+            complex[] filter = new complex[filterSize];
+            filter[0].re = 1;
+            for (int i = amountOfOnes + 1; i < filterSize - amountOfOnes; i++)
+            {
+                filter[i].re = 1;
+            }
+            return filter;
         }
     }
 }
