@@ -296,13 +296,13 @@ namespace _3931_Project_windows_forms
             {
                 if (e.NewSelectionStart < e.NewSelectionEnd)
                 {
-                    x1 = e.NewSelectionStart;
-                    x2 = e.NewSelectionEnd;
+                    x1 = e.NewSelectionStart + hScrollBar1.Value;
+                    x2 = e.NewSelectionEnd + hScrollBar1.Value;
                 }
                 else
                 {
-                    x2 = e.NewSelectionStart;
-                    x1 = e.NewSelectionEnd;
+                    x2 = e.NewSelectionStart + hScrollBar1.Value;
+                    x1 = e.NewSelectionEnd + hScrollBar1.Value;
                 }
                 Highlighted = new double[(int)(x2-x1)];
                 BufferHighlight = new byte[(int)(sizeof(Int16) * (x2 - x1))];
