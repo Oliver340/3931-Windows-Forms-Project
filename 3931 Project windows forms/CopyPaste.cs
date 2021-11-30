@@ -84,6 +84,24 @@ namespace _3931_Project_windows_forms
             return newWave;
         }
 
+        public static byte[] ByteCut(byte[] original, byte[] selection, double x1, double x2)
+        {
+            //Copy(selection);
+            byte[] newWave = new byte[original.Length - selection.Length];
+            for (int i = 0; i < newWave.Length; i++)
+            {
+                if (i < x1)
+                {
+                    newWave[i] = original[i];
+                }
+                else if (i > x2)
+                {
+                    newWave[i + (int)(x1 - x2)] = original[i];
+                }
+            }
+            return newWave;
+        }
+
         public static byte[] BytePaste(byte[] original, byte[] copied, double x1, double x2)
         {
             /*            if (!Clipboard.ContainsAudio())

@@ -321,8 +321,15 @@ namespace _3931_Project_windows_forms
         private void button6_Click(object sender, EventArgs e)
         {
             copied = Highlighted;
+            copiedBytes = BufferHighlight;
             waveData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
+            bufferWaveData = CopyPaste.ByteCut(bufferWaveData, BufferHighlight, sizeof(Int16) * x1, sizeof(Int16) * x2);
             plotWaveform(waveData);
+
+            fixed (byte* array = bufferWaveData)
+            {
+                setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample());
+            }
         }
 
         //Copy button
@@ -338,14 +345,13 @@ namespace _3931_Project_windows_forms
         {
             double[] newData = CopyPaste.Paste(waveData, copied, x1, x2);
             byte[] buffer = CopyPaste.BytePaste(bufferWaveData, copiedBytes, sizeof(Int16) * x1, sizeof(Int16) * x2);
-            initWaveData(newData);
-            initBufferData(buffer);
-            setPlot(newData);
+            waveData = newData;
+            bufferWaveData = buffer;
             plotWaveform(newData);
 
-            fixed (byte* array = bufferWaveData)
+            fixed (byte* array = buffer)
             {
-                setPSaveBuffer(array, bufferWaveData.Length, waveReader.getSamplesPerSecond(), waveReader.getBlockAlign(), waveReader.getBitsPerSample());
+                setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample());
             }
         }
 
@@ -377,7 +383,7 @@ namespace _3931_Project_windows_forms
             int byteRate = (int)waveReader.getByteRate();
             Console.WriteLine("byterate" + byteRate);
             int numSamples = bufferWaveData.Length;
-            Console.WriteLine("numsaples" + numSamples);
+            Console.WriteLine("numsamples" + numSamples);
             short blockAlign = (short)waveReader.getBlockAlign();
             Console.WriteLine("blockalign" + blockAlign);
             int subChunk2Size = waveReader.getSubChunk2Size();
@@ -399,7 +405,7 @@ namespace _3931_Project_windows_forms
             wr.Write(blockAlign);
             wr.Write(bitsPerSample);
             wr.Write(System.Text.Encoding.ASCII.GetBytes("data"));
-            wr.Write(subChunk2Size);
+            wr.Write(numSamples);
 
             for (int i = 0; i < numSamples; i++)
             {
