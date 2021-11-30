@@ -51,6 +51,7 @@ namespace _3931_Project_windows_forms
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
             this.button11 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button12 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WaveChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -225,11 +226,22 @@ namespace _3931_Project_windows_forms
             this.textBox1.Size = new System.Drawing.Size(100, 22);
             this.textBox1.TabIndex = 17;
             // 
+            // button12
+            // 
+            this.button12.Location = new System.Drawing.Point(182, 445);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(75, 23);
+            this.button12.TabIndex = 18;
+            this.button12.Text = "DFT";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1164, 586);
+            this.Controls.Add(this.button12);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button11);
             this.Controls.Add(this.hScrollBar1);
@@ -273,6 +285,7 @@ namespace _3931_Project_windows_forms
         private HScrollBar hScrollBar1;
         private Button button11;
         private TextBox textBox1;
+        private Button button12;
     }
 }
 

@@ -93,24 +93,24 @@ namespace _3931_Project_windows_forms
                 binaryReader.ReadInt32(),
                 binaryReader.ReadInt32(),
                 binaryReader.ReadInt32(),
-                binaryReader.ReadInt16(),
-                binaryReader.ReadInt16(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt16(),
-                binaryReader.ReadInt16(),
+                binaryReader.ReadUInt16(),
+                binaryReader.ReadUInt16(),
+                binaryReader.ReadUInt32(),
+                binaryReader.ReadUInt32(),
+                binaryReader.ReadUInt16(),
+                binaryReader.ReadUInt16(),
                 binaryReader.ReadInt32(),
                 binaryReader.ReadInt32()
                 );
 
-
             byte[] buffer = binaryReader.ReadBytes(waveReader.getSubChunk2Size());
 
-            double[] newData = new double[buffer.Length / waveReader.getBlockAlign()];
-            for (int i = 0; i < newData.Length; i++)
+            short[] shortBuffer = new short[buffer.Length / waveReader.getBlockAlign()];
+            for (int i = 0; i < shortBuffer.Length; i++)
             {
-                newData[i] = BitConverter.ToInt16(buffer, waveReader.getBlockAlign() * i);
+                shortBuffer[i] = BitConverter.ToInt16(buffer, waveReader.getBlockAlign() * i);
             }
+            double[] newData = shortBuffer.Select(x => (double)(x)).ToArray();
 
             initWaveData(newData);
             initBufferData(buffer);
@@ -120,7 +120,7 @@ namespace _3931_Project_windows_forms
 
             fixed (byte* array = bufferWaveData)
             {
-                setPSaveBuffer(array, bufferWaveData.Length, waveReader.getSamplesPerSecond(), waveReader.getBlockAlign(), waveReader.getBitsPerSample());
+                setPSaveBuffer(array, bufferWaveData.Length, (int) waveReader.getSamplesPerSecond(), (short) waveReader.getBlockAlign(), (short) waveReader.getBitsPerSample());
             }
         }
 
@@ -321,26 +321,8 @@ namespace _3931_Project_windows_forms
         private void button6_Click(object sender, EventArgs e)
         {
             copied = Highlighted;
-            double[] newData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
-            byte[] buffer = new byte[waveData.Length * sizeof(Int16)];
-            for (int i = 0; i < waveData.Length; i++)
-            {
-                byte[] temp = BitConverter.GetBytes((Int16)waveData[i]);
-                for (int j = 0; j < temp.Length; j++)
-                {
-                    buffer[j + (temp.Length * i)] = temp[j];
-                }
-            }
-            Buffer.BlockCopy(waveData, 0, buffer, 0, buffer.Length);
-            initWaveData(newData);
-            initBufferData(buffer);
-            setPlot(newData);
-            plotWaveform(newData);
-
-            fixed (byte* array = bufferWaveData)
-            {
-                setPSaveBuffer(array, bufferWaveData.Length, waveReader.getSamplesPerSecond(), waveReader.getBlockAlign(), waveReader.getBitsPerSample());
-            }
+            waveData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
+            plotWaveform(waveData);
         }
 
         //Copy button
@@ -354,7 +336,7 @@ namespace _3931_Project_windows_forms
         //Paste button
         private void button5_Click(object sender, EventArgs e)
         {
-            double[] newData=CopyPaste.Paste(waveData, copied, x1, x2);
+            double[] newData = CopyPaste.Paste(waveData, copied, x1, x2);
             byte[] buffer = CopyPaste.BytePaste(bufferWaveData, copiedBytes, sizeof(Int16) * x1, sizeof(Int16) * x2);
             initWaveData(newData);
             initBufferData(buffer);
@@ -384,19 +366,19 @@ namespace _3931_Project_windows_forms
             //Header Bytes
             int subChunk1Size = waveReader.getSubChunk1Size();
             Console.WriteLine("subchunk1size" + subChunk1Size);
-            short audioFormat = waveReader.getAudioFormat();
+            short audioFormat = (short)waveReader.getAudioFormat();
             Console.WriteLine("audioformat" + audioFormat);
-            short bitsPerSample = waveReader.getBitsPerSample();
+            short bitsPerSample = (short)waveReader.getBitsPerSample();
             Console.WriteLine("bitspersample" + bitsPerSample);
-            short numChannels = waveReader.getNumChannels();
+            short numChannels = (short)waveReader.getNumChannels();
             Console.WriteLine("numchannels" + numChannels);
-            int sampleRate = waveReader.getSampleRate();
+            int sampleRate = (int)waveReader.getSampleRate();
             Console.WriteLine("samplerate" + sampleRate);
-            int byteRate = waveReader.getByteRate();
+            int byteRate = (int)waveReader.getByteRate();
             Console.WriteLine("byterate" + byteRate);
             int numSamples = bufferWaveData.Length;
             Console.WriteLine("numsaples" + numSamples);
-            short blockAlign = waveReader.getBlockAlign();
+            short blockAlign = (short)waveReader.getBlockAlign();
             Console.WriteLine("blockalign" + blockAlign);
             int subChunk2Size = waveReader.getSubChunk2Size();
             Console.WriteLine("subchunk2size" + subChunk2Size);
@@ -452,21 +434,26 @@ namespace _3931_Project_windows_forms
             {
                 buffer[i] = *(pSaveBuffer + i * sizeof(byte));
             }
+            waveReader = new WavReader(0, 36 + buffer.Length, 0, 0, 16, 1, 1, 44100, 44100, 2, 16, 0, buffer.Length);
 
-            double[] newData = new double[buffer.Length];
-            for (int i = 0; i < newData.Length; i++)
+            //double[] newData = new double[buffer.Length];
+            //for (int i = 0; i < newData.Length; i++)
+            //{
+            //    newData[i] = buffer[i];
+            //    newData[i] -= 128;
+            //}
+            short[] shortBuffer = new short[buffer.Length / waveReader.getBlockAlign()];
+            for (int i = 0; i < shortBuffer.Length; i++)
             {
-                newData[i] = buffer[i];
-                newData[i] -= 128;
+                shortBuffer[i] = BitConverter.ToInt16(buffer, waveReader.getBlockAlign() * i);
             }
+            double[] newData = shortBuffer.Select(x => (double)(x)).ToArray();
 
             initWaveData(newData);
             initBufferData(buffer);
 
             setPlot(waveData);
             plotWaveform(waveData);
-
-            waveReader = new WavReader(0, newData.Length + 36, 0, 0, 16, 1, 1, 44100, 88200, 2, 8, 0, newData.Length);
         }
 
         // Pause Button
@@ -485,19 +472,15 @@ namespace _3931_Project_windows_forms
         private void button11_Click(object sender, EventArgs e)
         {
             int fcut = Int32.Parse(textBox1.Text);
-            if (fcut < 1)
-            {
-                fcut = 100;
-            }
-            int sampleRate = 1000;
+            int sampleRate = (int)waveReader.getSampleRate();
             int filterSize = 16;
-            int numberOfSamples = 100;
+            int numberOfSamples = (int) x2;
 
             complex[] filter = Filtering.lowPassFilter(filterSize, fcut, sampleRate);
             double[] fw = Fourier.inverseDFT(filter, filterSize);
 
             double[] selectedSamples = new double[numberOfSamples];
-            int startSelect = 50;
+            int startSelect = (int) x1;
             for (int i = startSelect; i < startSelect + numberOfSamples; i++)
             {
                 selectedSamples[i - startSelect] = waveData[i];
@@ -525,11 +508,23 @@ namespace _3931_Project_windows_forms
         }
 
         // DFT
-        //complex[] A = Fourier.DFT(waveData, waveData.Length);
-        //for (int i = 0; i<A.Length; i++)
-        //{
-        //    waveData[i] = (A[i].im* A[i].im) + (A[i].re* A[i].re);
-        //}
-        //plotWaveform(waveData);
-}
+        private void button12_Click(object sender, EventArgs e)
+        {
+            int numberOfSamples = (int)(x2);
+            double[] selectedSamples = new double[numberOfSamples];
+            int startSelect = (int)x1;
+            for (int i = startSelect; i < startSelect + numberOfSamples; i++)
+            {
+                selectedSamples[i - startSelect] = waveData[i];
+            }
+            complex[] A = Fourier.DFT(selectedSamples, selectedSamples.Length);
+            for (int i = (int) 0; i < A.Length; i++)
+            {
+                selectedSamples[i] = (A[i].im * A[i].im) + (A[i].re * A[i].re);
+            }
+            initWaveData(selectedSamples);
+            setPlot(selectedSamples);
+            plotWaveform(selectedSamples);
+        }
+    }
 }
