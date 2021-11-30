@@ -59,13 +59,15 @@ namespace _3931_Project_windows_forms
             start();
         }
 
-        public double[] copied;
+        public double[] copied = null;
+        public byte[] copiedBytes = null;
         WavReader waveReader;
         public double[] waveData;
         public double[] plottedWaveData;
         public byte[] bufferWaveData;
         public byte[] bufferPlottedWaveData;
-        double[] Highlighted;
+        public double[] Highlighted;
+        byte[] BufferHighlight;
         double x1 = 0;
         double x2 = 0;
 
@@ -303,9 +305,14 @@ namespace _3931_Project_windows_forms
                     x1 = e.NewSelectionEnd;
                 }
                 Highlighted = new double[(int)(x2-x1)];
+                BufferHighlight = new byte[(int)(sizeof(Int16) * (x2 - x1))];
                 for (double i = x1; i < x2; i++)
                 {
                     Highlighted[(int)(i-x1)]=waveData[(int)i];
+                    for (int j = 0; j < sizeof(Int16); j++)
+                    {
+                        BufferHighlight[(sizeof(Int16) * (int)(i-x1)) + j] = bufferWaveData[(int)(sizeof(Int16) * (i)) + j];
+                    }
                 }
             }
         }
@@ -314,8 +321,26 @@ namespace _3931_Project_windows_forms
         private void button6_Click(object sender, EventArgs e)
         {
             copied = Highlighted;
-            waveData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
-            plotWaveform(waveData);
+            double[] newData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
+            byte[] buffer = new byte[waveData.Length * sizeof(Int16)];
+            for (int i = 0; i < waveData.Length; i++)
+            {
+                byte[] temp = BitConverter.GetBytes((Int16)waveData[i]);
+                for (int j = 0; j < temp.Length; j++)
+                {
+                    buffer[j + (temp.Length * i)] = temp[j];
+                }
+            }
+            Buffer.BlockCopy(waveData, 0, buffer, 0, buffer.Length);
+            initWaveData(newData);
+            initBufferData(buffer);
+            setPlot(newData);
+            plotWaveform(newData);
+
+            fixed (byte* array = bufferWaveData)
+            {
+                setPSaveBuffer(array, bufferWaveData.Length, waveReader.getSamplesPerSecond(), waveReader.getBlockAlign(), waveReader.getBitsPerSample());
+            }
         }
 
         //Copy button
@@ -323,13 +348,23 @@ namespace _3931_Project_windows_forms
         {
             //CopyPaste.Copy(Highlighted);
             copied = Highlighted;
+            copiedBytes = BufferHighlight;
         }
 
         //Paste button
         private void button5_Click(object sender, EventArgs e)
         {
-            waveData=CopyPaste.Paste(waveData, copied, x1, x2);
-            plotWaveform(waveData);
+            double[] newData=CopyPaste.Paste(waveData, copied, x1, x2);
+            byte[] buffer = CopyPaste.BytePaste(bufferWaveData, copiedBytes, sizeof(Int16) * x1, sizeof(Int16) * x2);
+            initWaveData(newData);
+            initBufferData(buffer);
+            setPlot(newData);
+            plotWaveform(newData);
+
+            fixed (byte* array = bufferWaveData)
+            {
+                setPSaveBuffer(array, bufferWaveData.Length, waveReader.getSamplesPerSecond(), waveReader.getBlockAlign(), waveReader.getBitsPerSample());
+            }
         }
 
         // Save Button
