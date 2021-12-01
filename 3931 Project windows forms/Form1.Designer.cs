@@ -39,6 +39,7 @@ namespace _3931_Project_windows_forms
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.WaveChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
@@ -57,6 +58,8 @@ namespace _3931_Project_windows_forms
             this.freqChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button13 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WaveChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.freqChart)).BeginInit();
@@ -101,7 +104,6 @@ namespace _3931_Project_windows_forms
             this.WaveChart.Size = new System.Drawing.Size(941, 273);
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";
-            this.WaveChart.SelectionRangeChanged += chart_SelectionRangeChanged;
             // 
             // trackBar1
             // 
@@ -114,7 +116,7 @@ namespace _3931_Project_windows_forms
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(267, 7);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(74, 30);
             this.button2.TabIndex = 5;
@@ -126,7 +128,7 @@ namespace _3931_Project_windows_forms
             // 
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.Location = new System.Drawing.Point(649, 306);
-            this.button4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 29);
             this.button4.TabIndex = 7;
@@ -138,7 +140,7 @@ namespace _3931_Project_windows_forms
             // 
             this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button5.Location = new System.Drawing.Point(857, 306);
-            this.button5.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(74, 29);
             this.button5.TabIndex = 8;
@@ -150,7 +152,7 @@ namespace _3931_Project_windows_forms
             // 
             this.button6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button6.Location = new System.Drawing.Point(753, 306);
-            this.button6.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button6.Margin = new System.Windows.Forms.Padding(2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(69, 29);
             this.button6.TabIndex = 9;
@@ -232,7 +234,7 @@ namespace _3931_Project_windows_forms
             // 
             this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button11.Location = new System.Drawing.Point(476, 306);
-            this.button11.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button11.Margin = new System.Windows.Forms.Padding(2);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(137, 29);
             this.button11.TabIndex = 19;
@@ -250,42 +252,71 @@ namespace _3931_Project_windows_forms
             legend2.Enabled = false;
             legend2.Name = "Legend1";
             this.freqChart.Legends.Add(legend2);
-            this.freqChart.Location = new System.Drawing.Point(12, 409);
-            this.freqChart.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.freqChart.Location = new System.Drawing.Point(12, 169);
+            this.freqChart.Margin = new System.Windows.Forms.Padding(2);
             this.freqChart.Name = "freqChart";
             series3.ChartArea = "ChartArea1";
             series3.Legend = "Legend1";
             series3.Name = "Series1";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Legend = "Legend1";
+            series4.Name = "Series2";
             this.freqChart.Series.Add(series3);
-            this.freqChart.Size = new System.Drawing.Size(941, 276);
+            this.freqChart.Series.Add(series4);
+            this.freqChart.Size = new System.Drawing.Size(1412, 432);
             this.freqChart.TabIndex = 20;
             this.freqChart.Text = "chart1";
             // 
             // button13
             // 
             this.button13.Location = new System.Drawing.Point(958, 386);
-            this.button13.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button13.Margin = new System.Windows.Forms.Padding(2);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(149, 28);
             this.button13.TabIndex = 21;
             this.button13.Text = "Low-Pass";
             this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // button14
             // 
             this.button14.Location = new System.Drawing.Point(957, 429);
-            this.button14.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button14.Margin = new System.Windows.Forms.Padding(2);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(150, 28);
             this.button14.TabIndex = 22;
             this.button14.Text = "High-Pass";
             this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(1437, 747);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(224, 40);
+            this.button15.TabIndex = 23;
+            this.button15.Text = "Apply";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(485, 478);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(184, 45);
+            this.button16.TabIndex = 24;
+            this.button16.Text = "Rectangle";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1164, 715);
+            this.ClientSize = new System.Drawing.Size(1746, 1055);
+            this.Controls.Add(this.button16);
+            this.Controls.Add(this.button15);
             this.Controls.Add(this.button14);
             this.Controls.Add(this.button13);
             this.Controls.Add(this.freqChart);
@@ -336,6 +367,8 @@ namespace _3931_Project_windows_forms
         private System.Windows.Forms.DataVisualization.Charting.Chart freqChart;
         private Button button13;
         private Button button14;
+        private Button button15;
+        private Button button16;
     }
 }
 
