@@ -57,6 +57,7 @@ namespace _3931_Project_windows_forms
             this.freqChart.Size = new System.Drawing.Size(1406, 862);
             this.freqChart.TabIndex = 0;
             this.freqChart.Text = "freqChart";
+            this.freqChart.SelectionRangeChanged += chart_SelectionRangeChanged;
             // 
             // button1
             // 

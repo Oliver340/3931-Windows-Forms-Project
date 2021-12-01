@@ -90,47 +90,24 @@ namespace _3931_Project_windows_forms
             }
             double[] filteredSamples = Filtering.convolution(fw, originalWaveData);
             f.readFilter(filteredSamples);
-            //for (int i = 0; i < filteredSamples.Length; i++)
-            //{
-            //    freqChart.Series["Series1"].Points.AddXY(i, filteredSamples[i]);
-            //}
-
-            //complex[] A = Fourier.DFT(filteredSamples, filteredSamples.Length);
-            //double[] newFreqData = new double[A.Length];
-            //for (int i = 0; i < A.Length; i++)
-            //{
-            //    newFreqData[i] = Math.Sqrt((A[i].im * A[i].im) + (A[i].re * A[i].re));
-            //}
-            //for (int i = 0; i < A.Length; i++)
-            //{
-            //    freqChart.Series["Series1"].Points.AddXY(i, newFreqData[i]);
-            //}
 
 
-
-
-
-
-
-
-
-
-            //for (int i = 0; i < filter.Length; i++)
-            //{
-            //    Console.WriteLine(filter[i].re);
-            //}
-            //Console.WriteLine();
-            //for (int i = 0; i < fw.Length; i++)
-            //{
-            //    Console.WriteLine(fw[i]);
-            //}
-            //Console.WriteLine();
-            //for (int i = 0; i < filteredSamples.Length; i++)
-            //{
-            //    Console.WriteLine(filteredSamples[i]);
-            //}
-            //Console.WriteLine();
-            //Console.WriteLine();
+            for (int i = 0; i < filter.Length; i++)
+            {
+                Console.WriteLine(filter[i].re);
+            }
+            Console.WriteLine();
+            for (int i = 0; i < fw.Length; i++)
+            {
+                Console.WriteLine(fw[i]);
+            }
+            Console.WriteLine();
+            for (int i = 0; i < filteredSamples.Length; i++)
+            {
+                Console.WriteLine(filteredSamples[i]);
+            }
+            Console.WriteLine();
+            Console.WriteLine();
 
 
             //double[] ogTestSamples = { 2, 1, 5, 4, 9, 7, 8, 6, 4, 6, 4, 6, 1 };
@@ -164,31 +141,22 @@ namespace _3931_Project_windows_forms
         // Button to filter using high pass
         private void button2_Click(object sender, EventArgs e)
         {
-            //double fcut = freqData[(int)x2];
+            int filterSize = Int32.Parse(textBox1.Text);
+            Console.WriteLine(filterSize);
+            Console.WriteLine(x2);
+            double fcut = x2 * sampleRate / filterSize;
+            Console.WriteLine(fcut);
+            Console.WriteLine(sampleRate);
+            Console.WriteLine();
 
-            //complex[] filter = Filtering.highPassFilter(freqData.Length, fcut, sampleRate);
-            //double[] fw = Fourier.inverseDFT(filter, freqData.Length);
-            //double[] filteredSamples = Filtering.convolution(fw, freqData);
-            //for (int i = 0; i < filteredSamples.Length; i++)
-            //{
-            //    freqChart.Series["Series1"].Points.AddXY(i, filteredSamples[i]);
-            //}
-
-
-            //for (int i = 0; i < filter.Length; i++)
-            //{
-            //    Console.WriteLine(filter[i].re);
-            //}
-            //Console.WriteLine();
-            //for (int i = 0; i < fw.Length; i++)
-            //{
-            //    Console.WriteLine(fw[i]);
-            //}
-            //Console.WriteLine();
-            //for (int i = 0; i < filteredSamples.Length; i++)
-            //{
-            //    Console.WriteLine(filteredSamples[i]);
-            //}
+            complex[] filter = Filtering.highPassFilter(filterSize, fcut, sampleRate);
+            double[] fw = Fourier.inverseDFT(filter, filterSize);
+            for (int i = 0; i < fw.Length; i++)
+            {
+                fw[i] /= filterSize;
+            }
+            double[] filteredSamples = Filtering.convolution(fw, originalWaveData);
+            f.readFilter(filteredSamples);
         }
 
         // IDFT Button
