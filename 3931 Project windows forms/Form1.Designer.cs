@@ -56,9 +56,10 @@ namespace _3931_Project_windows_forms
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 3);
+            this.button1.Location = new System.Drawing.Point(18, 5);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 32);
+            this.button1.Size = new System.Drawing.Size(112, 50);
             this.button1.TabIndex = 0;
             this.button1.Text = "Open";
             this.button1.UseVisualStyleBackColor = true;
@@ -75,42 +76,42 @@ namespace _3931_Project_windows_forms
             chartArea1.AxisX2.ScaleView.MinSize = 0D;
             chartArea1.Name = "ChartArea1";
             this.WaveChart.ChartAreas.Add(chartArea1);
-            this.WaveChart.SelectionRangeChanged += chart_SelectionRangeChanged;
             legend1.Enabled = false;
             legend1.Name = "Legend1";
             this.WaveChart.Legends.Add(legend1);
-            this.WaveChart.Location = new System.Drawing.Point(12, 41);
+            this.WaveChart.Location = new System.Drawing.Point(18, 64);
+            this.WaveChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.WaveChart.Name = "WaveChart";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Legend = "Legend1";
             series1.Name = "chartSeries";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Time;
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series2.Legend = "Legend1";
             series2.Name = "ZeroSeries";
             this.WaveChart.Series.Add(series1);
             this.WaveChart.Series.Add(series2);
-            this.WaveChart.Size = new System.Drawing.Size(941, 392);
+            this.WaveChart.Size = new System.Drawing.Size(1412, 612);
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";
+            this.WaveChart.SelectionRangeChanged += chart_SelectionRangeChanged;
             // 
             // trackBar1
             // 
             this.trackBar1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.trackBar1.Location = new System.Drawing.Point(35, 439);
+            this.trackBar1.Location = new System.Drawing.Point(52, 686);
+            this.trackBar1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(104, 56);
+            this.trackBar1.Size = new System.Drawing.Size(156, 90);
             this.trackBar1.TabIndex = 3;
             this.trackBar1.Scroll += new System.EventHandler(this.trackBar1_Scroll);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(267, 7);
-            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Location = new System.Drawing.Point(400, 11);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(74, 30);
+            this.button2.Size = new System.Drawing.Size(111, 47);
             this.button2.TabIndex = 5;
             this.button2.Text = "Record";
             this.button2.UseVisualStyleBackColor = true;
@@ -118,10 +119,9 @@ namespace _3931_Project_windows_forms
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(645, 439);
-            this.button4.Margin = new System.Windows.Forms.Padding(2);
+            this.button4.Location = new System.Drawing.Point(968, 686);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 29);
+            this.button4.Size = new System.Drawing.Size(112, 45);
             this.button4.TabIndex = 7;
             this.button4.Text = " Copy";
             this.button4.UseVisualStyleBackColor = true;
@@ -129,10 +129,9 @@ namespace _3931_Project_windows_forms
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(856, 439);
-            this.button5.Margin = new System.Windows.Forms.Padding(2);
+            this.button5.Location = new System.Drawing.Point(1284, 686);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(74, 29);
+            this.button5.Size = new System.Drawing.Size(111, 45);
             this.button5.TabIndex = 8;
             this.button5.Text = "Paste";
             this.button5.UseVisualStyleBackColor = true;
@@ -140,10 +139,9 @@ namespace _3931_Project_windows_forms
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(755, 439);
-            this.button6.Margin = new System.Windows.Forms.Padding(2);
+            this.button6.Location = new System.Drawing.Point(1132, 686);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(69, 29);
+            this.button6.Size = new System.Drawing.Size(104, 45);
             this.button6.TabIndex = 9;
             this.button6.Text = "Cut";
             this.button6.UseVisualStyleBackColor = true;
@@ -151,9 +149,10 @@ namespace _3931_Project_windows_forms
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(123, 7);
+            this.button7.Location = new System.Drawing.Point(184, 11);
+            this.button7.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(79, 28);
+            this.button7.Size = new System.Drawing.Size(118, 44);
             this.button7.TabIndex = 10;
             this.button7.Text = "Save";
             this.button7.UseVisualStyleBackColor = true;
@@ -161,9 +160,10 @@ namespace _3931_Project_windows_forms
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(518, 5);
+            this.button8.Location = new System.Drawing.Point(777, 8);
+            this.button8.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(76, 28);
+            this.button8.Size = new System.Drawing.Size(114, 44);
             this.button8.TabIndex = 11;
             this.button8.Text = "Play";
             this.button8.UseVisualStyleBackColor = true;
@@ -171,9 +171,10 @@ namespace _3931_Project_windows_forms
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(365, 7);
+            this.button3.Location = new System.Drawing.Point(548, 11);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(128, 30);
+            this.button3.Size = new System.Drawing.Size(192, 47);
             this.button3.TabIndex = 12;
             this.button3.Text = "Stop Recording";
             this.button3.UseVisualStyleBackColor = true;
@@ -181,9 +182,10 @@ namespace _3931_Project_windows_forms
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(622, 7);
+            this.button9.Location = new System.Drawing.Point(933, 11);
+            this.button9.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.Size = new System.Drawing.Size(112, 36);
             this.button9.TabIndex = 13;
             this.button9.Text = "Pause";
             this.button9.UseVisualStyleBackColor = true;
@@ -191,9 +193,10 @@ namespace _3931_Project_windows_forms
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(729, 7);
+            this.button10.Location = new System.Drawing.Point(1094, 11);
+            this.button10.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(125, 30);
+            this.button10.Size = new System.Drawing.Size(188, 47);
             this.button10.TabIndex = 14;
             this.button10.Text = "Stop PlayBack";
             this.button10.UseVisualStyleBackColor = true;
@@ -201,17 +204,18 @@ namespace _3931_Project_windows_forms
             // 
             // hScrollBar1
             // 
-            this.hScrollBar1.Location = new System.Drawing.Point(12, 488);
+            this.hScrollBar1.Location = new System.Drawing.Point(18, 762);
             this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(941, 21);
+            this.hScrollBar1.Size = new System.Drawing.Size(1412, 21);
             this.hScrollBar1.TabIndex = 15;
             this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(182, 445);
+            this.button12.Location = new System.Drawing.Point(273, 695);
+            this.button12.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(75, 23);
+            this.button12.Size = new System.Drawing.Size(112, 36);
             this.button12.TabIndex = 18;
             this.button12.Text = "DFT";
             this.button12.UseVisualStyleBackColor = true;
@@ -219,9 +223,9 @@ namespace _3931_Project_windows_forms
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1164, 586);
+            this.ClientSize = new System.Drawing.Size(1746, 916);
             this.Controls.Add(this.button12);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.button10);
@@ -236,6 +240,7 @@ namespace _3931_Project_windows_forms
             this.Controls.Add(this.trackBar1);
             this.Controls.Add(this.WaveChart);
             this.Controls.Add(this.button1);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "Form1";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
