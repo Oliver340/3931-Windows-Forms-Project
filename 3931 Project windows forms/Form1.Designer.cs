@@ -49,8 +49,6 @@ namespace _3931_Project_windows_forms
             this.button9 = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            this.button11 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button12 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WaveChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
@@ -209,23 +207,6 @@ namespace _3931_Project_windows_forms
             this.hScrollBar1.TabIndex = 15;
             this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll);
             // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(415, 444);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(158, 23);
-            this.button11.TabIndex = 16;
-            this.button11.Text = "Low Pass Filter";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(288, 442);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 22);
-            this.textBox1.TabIndex = 17;
-            // 
             // button12
             // 
             this.button12.Location = new System.Drawing.Point(182, 445);
@@ -242,8 +223,6 @@ namespace _3931_Project_windows_forms
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1164, 586);
             this.Controls.Add(this.button12);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.button11);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.button9);
@@ -283,8 +262,6 @@ namespace _3931_Project_windows_forms
         private Button button9;
         private Button button10;
         private HScrollBar hScrollBar1;
-        private Button button11;
-        private TextBox textBox1;
         private Button button12;
     }
 }

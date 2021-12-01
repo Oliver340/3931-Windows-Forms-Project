@@ -34,7 +34,7 @@ namespace _3931_Project_windows_forms
             return s;
         }
 
-        public static complex[] lowPassFilter(int filterSize, int fcut, int sampleRate)
+        public static complex[] lowPassFilter(int filterSize, double fcut, int sampleRate)
         {
             int amountOfOnes = (int)Math.Floor((double)(fcut * filterSize / sampleRate));
 
@@ -53,7 +53,7 @@ namespace _3931_Project_windows_forms
             return filter;
         }
 
-        public static complex[] highPassFilter(int filterSize, int fcut, int sampleRate)
+        public static complex[] highPassFilter(int filterSize, double fcut, int sampleRate)
         {
             int amountOfOnes = (int)Math.Ceiling((double)(fcut * filterSize / sampleRate));
 

@@ -29,6 +29,8 @@ namespace _3931_Project_windows_forms
                     A[f].re += s[t] * Math.Cos(2.0 * Math.PI * t * f / N);
                     A[f].im -= s[t] * Math.Sin(2.0 * Math.PI * t * f / N);
                 }
+                A[f].re /= N;
+                A[f].im /= N;
             }
             return A;
         }
