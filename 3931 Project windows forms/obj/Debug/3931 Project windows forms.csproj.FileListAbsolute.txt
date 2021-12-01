@@ -19,3 +19,4 @@ C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Projec
 C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\bin\Debug\3931 Project windows forms.exe
 C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\bin\Debug\3931 Project windows forms.pdb
 C:\Users\olive\source\repos\3931 Project windows forms\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\_3931_Project_windows_forms.FrequencyDomain.resources
+C:\Users\dylan\source\repos\3931-Windows-Forms-Project\3931 Project windows forms\obj\Debug\_3931_Project_windows_forms.FrequencyDomain.resources

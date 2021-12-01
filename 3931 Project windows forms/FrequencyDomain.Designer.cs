@@ -44,24 +44,26 @@ namespace _3931_Project_windows_forms
             // 
             chartArea1.Name = "ChartArea1";
             this.freqChart.ChartAreas.Add(chartArea1);
-            this.freqChart.SelectionRangeChanged += chart_SelectionRangeChanged;
+            legend1.Enabled = false;
             legend1.Name = "Legend1";
             this.freqChart.Legends.Add(legend1);
-            this.freqChart.Location = new System.Drawing.Point(12, 12);
+            this.freqChart.Location = new System.Drawing.Point(18, 19);
+            this.freqChart.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.freqChart.Name = "freqChart";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.freqChart.Series.Add(series1);
-            this.freqChart.Size = new System.Drawing.Size(937, 552);
+            this.freqChart.Size = new System.Drawing.Size(1406, 862);
             this.freqChart.TabIndex = 0;
             this.freqChart.Text = "freqChart";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(971, 261);
+            this.button1.Location = new System.Drawing.Point(1456, 408);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(112, 36);
             this.button1.TabIndex = 1;
             this.button1.Text = "LP Filter";
             this.button1.UseVisualStyleBackColor = true;
@@ -69,9 +71,10 @@ namespace _3931_Project_windows_forms
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(971, 195);
+            this.button2.Location = new System.Drawing.Point(1456, 305);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(112, 36);
             this.button2.TabIndex = 2;
             this.button2.Text = "HP Filter";
             this.button2.UseVisualStyleBackColor = true;
@@ -79,9 +82,10 @@ namespace _3931_Project_windows_forms
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(981, 118);
+            this.button3.Location = new System.Drawing.Point(1472, 184);
+            this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(112, 36);
             this.button3.TabIndex = 3;
             this.button3.Text = "IDFT";
             this.button3.UseVisualStyleBackColor = true;
@@ -89,21 +93,23 @@ namespace _3931_Project_windows_forms
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(971, 339);
+            this.textBox1.Location = new System.Drawing.Point(1456, 530);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 22);
+            this.textBox1.Size = new System.Drawing.Size(148, 31);
             this.textBox1.TabIndex = 4;
             // 
             // FrequencyDomain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1135, 636);
+            this.ClientSize = new System.Drawing.Size(1702, 994);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.freqChart);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "FrequencyDomain";
             this.Text = "FrequencyDomain";
             ((System.ComponentModel.ISupportInitialize)(this.freqChart)).EndInit();
