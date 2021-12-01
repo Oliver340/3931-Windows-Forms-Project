@@ -40,12 +40,12 @@ namespace _3931_Project_windows_forms
 
             complex[] filter = new complex[filterSize];
             filter[0].re = 1;
-            for (int i = 1; i < amountOfOnes + 1; i++)
+            for (int i = 1; i < amountOfOnes + 1 && i < filterSize; i++)
             {
                 filter[i].re = 1;
                 filter[i].im = 0;
             }
-            for (int i = filterSize - 1; i >= filterSize - amountOfOnes; i--)
+            for (int i = filterSize - 1; i >= filterSize - amountOfOnes && i < filterSize; i--)
             {
                 filter[i].re = 1;
                 filter[i].im = 0;
@@ -59,7 +59,7 @@ namespace _3931_Project_windows_forms
 
             complex[] filter = new complex[filterSize];
             filter[0].re = 1;
-            for (int i = amountOfOnes + 1; i < filterSize - amountOfOnes; i++)
+            for (int i = amountOfOnes + 1; i < filterSize - amountOfOnes && i < filterSize; i++)
             {
                 filter[i].re = 1;
             }
