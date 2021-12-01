@@ -47,7 +47,7 @@ namespace _3931_Project_windows_forms
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            hScrollBar1.Visible = false;
+            //hScrollBar1.Visible = false;
             freqChart.Series["Series1"].Points.AddXY(0, 0);
             for (int i = 0; i < 10; i++)
             {
@@ -556,6 +556,7 @@ namespace _3931_Project_windows_forms
                 setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample(), (short)waveReader.getNumChannels());
             }
         }
+
         //Triangular Window
         private void button11_Click(object sender, EventArgs e)
         {
@@ -637,7 +638,7 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //Rectangle Windowing
+        //DFT Rectangle Windowing
         private void button16_Click(object sender, EventArgs e)
         {
             freqChart.ChartAreas[0].CursorX.IsUserEnabled = true;
