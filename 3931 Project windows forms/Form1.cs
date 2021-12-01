@@ -63,7 +63,6 @@ namespace _3931_Project_windows_forms
         }
 
         public double[] copied = null;
-        public byte[] copiedBytes = null;
         complex[] windowDFT;
         WavReader waveReader;
         public double[] waveData;
@@ -71,7 +70,6 @@ namespace _3931_Project_windows_forms
         public byte[] bufferWaveData;
         public byte[] bufferPlottedWaveData;
         public double[] Highlighted;
-        byte[] BufferHighlight;
         double x1 = 0;
         double x2 = 0;
 
@@ -330,14 +328,9 @@ namespace _3931_Project_windows_forms
                     x1 = e.NewSelectionEnd + hScrollBar1.Value;
                 }
                 Highlighted = new double[(int)(x2-x1)];
-                BufferHighlight = new byte[(int)(sizeof(Int16) * (x2 - x1))];
                 for (double i = x1; i < x2; i++)
                 {
                     Highlighted[(int)(i-x1)]=waveData[(int)i];
-                    for (int j = 0; j < sizeof(Int16); j++)
-                    {
-                        BufferHighlight[(sizeof(Int16) * (int)(i-x1)) + j] = bufferWaveData[(int)(sizeof(Int16) * (i)) + j];
-                    }
                 }
             }
         }
@@ -346,10 +339,12 @@ namespace _3931_Project_windows_forms
         private void button6_Click(object sender, EventArgs e)
         {
             copied = Highlighted;
-            copiedBytes = BufferHighlight;
             waveData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
-            bufferWaveData = CopyPaste.ByteCut(bufferWaveData, BufferHighlight, sizeof(Int16) * (x1), sizeof(Int16) * (x2));
+            setPlot(waveData);
             plotWaveform(waveData);
+            bufferWaveData = waveData.Select(x => Convert.ToInt16(x))
+                              .SelectMany(x => BitConverter.GetBytes(x))
+                              .ToArray();
 
             fixed (byte* array = bufferWaveData)
             {
@@ -362,19 +357,20 @@ namespace _3931_Project_windows_forms
         {
             //CopyPaste.Copy(Highlighted);
             copied = Highlighted;
-            copiedBytes = BufferHighlight;
         }
 
         //Paste button
         private void button5_Click(object sender, EventArgs e)
         {
             double[] newData = CopyPaste.Paste(waveData, copied, x1, x2);
-            byte[] buffer = CopyPaste.BytePaste(bufferWaveData, copiedBytes, sizeof(Int16) * (x1), sizeof(Int16) * (x2));
             waveData = newData;
-            bufferWaveData = buffer;
+            bufferWaveData = newData.Select(x => Convert.ToInt16(x))
+                              .SelectMany(x => BitConverter.GetBytes(x))
+                              .ToArray();
+            setPlot(newData);
             plotWaveform(newData);
 
-            fixed (byte* array = buffer)
+            fixed (byte* array = bufferWaveData)
             {
                 setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample(), (short)waveReader.getNumChannels());
             }
