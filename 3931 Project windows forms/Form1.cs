@@ -538,25 +538,6 @@ namespace _3931_Project_windows_forms
             freqPlot.dftFreqChart(selectedSamples, (int) waveReader.getSampleRate(), A, waveData, this);
         }
 
-        // Function to plot and play the new filtered samples
-        public void readFilter(double[] filteredSamples)
-        {
-
-            byte[] buffer = filteredSamples.Select(x => Convert.ToInt16(x))
-                              .SelectMany(x => BitConverter.GetBytes(x))
-                              .ToArray();
-
-            initBufferData(buffer);
-            initWaveData(filteredSamples);
-            setPlot(filteredSamples);
-            plotWaveform(filteredSamples);
-
-            fixed (byte* array = bufferWaveData)
-            {
-                setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample(), (short)waveReader.getNumChannels());
-            }
-        }
-
         //Triangular Window
         private void button11_Click(object sender, EventArgs e)
         {
@@ -667,7 +648,7 @@ namespace _3931_Project_windows_forms
             setPlot(waveData);
             plotWaveform(waveData);
 
-            bufferWaveData = waveData.Select(x => Convert.ToInt16(x))
+            bufferWaveData = waveData.Select(x => Convert.ToInt32(x))
                               .SelectMany(x => BitConverter.GetBytes(x))
                               .ToArray();
             fixed (byte* array = bufferWaveData)

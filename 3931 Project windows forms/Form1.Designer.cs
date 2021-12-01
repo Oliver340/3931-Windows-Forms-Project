@@ -70,7 +70,7 @@ namespace _3931_Project_windows_forms
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button1.Location = new System.Drawing.Point(22, 3);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(65, 28);
+            this.button1.Size = new System.Drawing.Size(82, 28);
             this.button1.TabIndex = 0;
             this.button1.Text = "Open";
             this.button1.UseVisualStyleBackColor = true;
@@ -121,7 +121,7 @@ namespace _3931_Project_windows_forms
             this.button2.Location = new System.Drawing.Point(195, 3);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(65, 28);
+            this.button2.Size = new System.Drawing.Size(82, 28);
             this.button2.TabIndex = 5;
             this.button2.Text = "Record";
             this.button2.UseVisualStyleBackColor = true;
@@ -168,7 +168,7 @@ namespace _3931_Project_windows_forms
             this.button7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button7.Location = new System.Drawing.Point(109, 3);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(65, 28);
+            this.button7.Size = new System.Drawing.Size(82, 28);
             this.button7.TabIndex = 10;
             this.button7.Text = "Save";
             this.button7.UseVisualStyleBackColor = true;
@@ -179,7 +179,7 @@ namespace _3931_Project_windows_forms
             this.button8.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button8.Location = new System.Drawing.Point(363, 3);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(65, 28);
+            this.button8.Size = new System.Drawing.Size(82, 28);
             this.button8.TabIndex = 11;
             this.button8.Text = "Play";
             this.button8.UseVisualStyleBackColor = true;
@@ -190,7 +190,7 @@ namespace _3931_Project_windows_forms
             this.button3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button3.Location = new System.Drawing.Point(279, 3);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(65, 28);
+            this.button3.Size = new System.Drawing.Size(82, 28);
             this.button3.TabIndex = 12;
             this.button3.Text = "Stop Recording";
             this.button3.UseVisualStyleBackColor = true;
@@ -201,7 +201,7 @@ namespace _3931_Project_windows_forms
             this.button9.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button9.Location = new System.Drawing.Point(447, 3);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(65, 28);
+            this.button9.Size = new System.Drawing.Size(82, 28);
             this.button9.TabIndex = 13;
             this.button9.Text = "Pause";
             this.button9.UseVisualStyleBackColor = true;
@@ -212,7 +212,7 @@ namespace _3931_Project_windows_forms
             this.button10.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button10.Location = new System.Drawing.Point(529, 3);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(65, 28);
+            this.button10.Size = new System.Drawing.Size(82, 28);
             this.button10.TabIndex = 14;
             this.button10.Text = "Stop PlayBack";
             this.button10.UseVisualStyleBackColor = true;
