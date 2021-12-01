@@ -11,7 +11,7 @@ namespace _3931_Project_windows_forms
         public static double[] convolution(double[] fw, double[] s)
         {
             double sum;
-            int sizeOfSamplesWithZero = s.Length + fw.Length;
+            int sizeOfSamplesWithZero = s.Length + fw.Length - 1;
             double[] newSamples = new double[sizeOfSamplesWithZero];
             for (int i = 0; i < sizeOfSamplesWithZero; i++)
             {
@@ -29,14 +29,14 @@ namespace _3931_Project_windows_forms
                 {
                     sum += newSamples[i + j] * fw[j];
                 }
-                s[i] = sum / fw.Length;
+                //s[i] = sum / fw.Length;
             }
             return s;
         }
 
         public static complex[] lowPassFilter(int filterSize, double fcut, int sampleRate)
         {
-            int amountOfOnes = (int)Math.Floor((double)(fcut * filterSize / sampleRate));
+            int amountOfOnes = (int)Math.Ceiling((double)(fcut * filterSize / sampleRate));
 
             complex[] filter = new complex[filterSize];
             filter[0].re = 1;

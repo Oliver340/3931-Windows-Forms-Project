@@ -40,6 +40,7 @@ namespace _3931_Project_windows_forms
         [DllImport("RecordDLL.dll")]
         public static extern void stopPlayData();
 
+
         public Form1()
         {
             InitializeComponent();
@@ -145,7 +146,7 @@ namespace _3931_Project_windows_forms
         }
 
         // Function to initialize the display wave data
-        private void initWaveData(double[] newData)
+        public void initWaveData(double[] newData)
         {
             waveData = newData;
             plottedWaveData = new double[waveData.Length];
@@ -159,7 +160,7 @@ namespace _3931_Project_windows_forms
         }
 
         // Function to plot a wave
-        private void plotWaveform(double[] newData)
+        public void plotWaveform(double[] newData)
         {
             
             WaveChart.Series["ZeroSeries"].Points.Clear();
@@ -216,7 +217,7 @@ namespace _3931_Project_windows_forms
         }
 
         // Function to set the plot of wave display
-        private void setPlot(double[] newData)
+        public void setPlot(double[] newData)
         {
             hScrollBar1.Value = 0;
             hScrollBar1.Minimum = 0;
@@ -493,13 +494,13 @@ namespace _3931_Project_windows_forms
         {
             int numberOfSamples = Highlighted.Length;
             double[] selectedSamples = new double[numberOfSamples];
-            int startSelect = (int)x1 + hScrollBar1.Value;
-            for (int i = startSelect; i < startSelect + numberOfSamples; i++)
+            int startSelect = (int)x1;
+            for (int i = startSelect; i < startSelect + numberOfSamples && i < waveData.Length; i++)
             {
                 selectedSamples[i - startSelect] = waveData[i];
             }
             complex[] A = Fourier.DFT(selectedSamples, selectedSamples.Length);
-            for (int i = (int) 0; i < A.Length; i++)
+            for (int i = 0; i < A.Length; i++)
             {
                 selectedSamples[i] = Math.Sqrt((A[i].im * A[i].im) + (A[i].re * A[i].re));
             }
@@ -511,7 +512,26 @@ namespace _3931_Project_windows_forms
         {
             FrequencyDomain freqPlot = new FrequencyDomain();
             freqPlot.Show();
-            freqPlot.dftFreqChart(selectedSamples, (int) waveReader.getSampleRate(), A);
+            freqPlot.dftFreqChart(selectedSamples, (int) waveReader.getSampleRate(), A, waveData, this);
+        }
+
+        // Function to plot and play the new filtered samples
+        public void readFilter(double[] filteredSamples)
+        {
+
+            byte[] buffer = filteredSamples.Select(x => Convert.ToInt16(x))
+                              .SelectMany(x => BitConverter.GetBytes(x))
+                              .ToArray();
+
+            initBufferData(buffer);
+            initWaveData(filteredSamples);
+            setPlot(filteredSamples);
+            plotWaveform(filteredSamples);
+
+            fixed (byte* array = bufferWaveData)
+            {
+                setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample(), (short)waveReader.getNumChannels());
+            }
         }
     }
 }

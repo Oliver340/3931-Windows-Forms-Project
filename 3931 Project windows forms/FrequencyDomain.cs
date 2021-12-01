@@ -15,10 +15,12 @@ namespace _3931_Project_windows_forms
     {
         complex[] dftData;
         double[] freqData;
+        double[] originalWaveData;
         double[] Highlighted;
         double x1 = 0;
         double x2 = 0;
         int sampleRate;
+        Form1 f;
 
         public FrequencyDomain()
         {
@@ -31,8 +33,10 @@ namespace _3931_Project_windows_forms
             freqChart.ChartAreas[0].AxisX.Maximum = Double.NaN;
         }
 
-        public void dftFreqChart(double[] selectedSamples, int srate, complex[] A)
+        public void dftFreqChart(double[] selectedSamples, int srate, complex[] A, double[] waveData, Form1 form)
         {
+            f = form;
+            originalWaveData = waveData;
             dftData = A;
             sampleRate = srate;
             freqData = selectedSamples;
@@ -80,28 +84,81 @@ namespace _3931_Project_windows_forms
 
             complex[] filter = Filtering.lowPassFilter(filterSize, fcut, sampleRate);
             double[] fw = Fourier.inverseDFT(filter, filterSize);
-            double[] filteredSamples = Filtering.convolution(fw, freqData);
-            for (int i = 0; i < filteredSamples.Length; i++)
-            {
-                freqChart.Series["Series1"].Points.AddXY(i, filteredSamples[i]);
-            }
-
-
-            for (int i = 0; i < filter.Length; i++)
-            {
-                Console.WriteLine(filter[i].re);
-            }
-            Console.WriteLine();
             for (int i = 0; i < fw.Length; i++)
             {
-                Console.WriteLine(fw[i]);
+                fw[i] /= filterSize;
             }
-            Console.WriteLine();
-            for (int i = 0; i < filteredSamples.Length; i++)
-            {
-                Console.WriteLine(filteredSamples[i]);
-            }
-            Console.WriteLine();
+            double[] filteredSamples = Filtering.convolution(fw, originalWaveData);
+            f.readFilter(filteredSamples);
+            //for (int i = 0; i < filteredSamples.Length; i++)
+            //{
+            //    freqChart.Series["Series1"].Points.AddXY(i, filteredSamples[i]);
+            //}
+
+            //complex[] A = Fourier.DFT(filteredSamples, filteredSamples.Length);
+            //double[] newFreqData = new double[A.Length];
+            //for (int i = 0; i < A.Length; i++)
+            //{
+            //    newFreqData[i] = Math.Sqrt((A[i].im * A[i].im) + (A[i].re * A[i].re));
+            //}
+            //for (int i = 0; i < A.Length; i++)
+            //{
+            //    freqChart.Series["Series1"].Points.AddXY(i, newFreqData[i]);
+            //}
+
+
+
+
+
+
+
+
+
+
+            //for (int i = 0; i < filter.Length; i++)
+            //{
+            //    Console.WriteLine(filter[i].re);
+            //}
+            //Console.WriteLine();
+            //for (int i = 0; i < fw.Length; i++)
+            //{
+            //    Console.WriteLine(fw[i]);
+            //}
+            //Console.WriteLine();
+            //for (int i = 0; i < filteredSamples.Length; i++)
+            //{
+            //    Console.WriteLine(filteredSamples[i]);
+            //}
+            //Console.WriteLine();
+            //Console.WriteLine();
+
+
+            //double[] ogTestSamples = { 2, 1, 5, 4, 9, 7, 8, 6, 4, 6, 4, 6, 1 };
+            //complex[] testFilter = new complex[8];
+            //testFilter[0].re = 1;
+            //testFilter[1].re = 1;
+            //testFilter[2].re = 1;
+            //testFilter[3].re = 0;
+            //testFilter[4].re = 0;
+            //testFilter[5].re = 0;
+            //testFilter[6].re = 1;
+            //testFilter[7].re = 1;
+            //double[] testFW = Fourier.inverseDFT(testFilter, 8);
+            //for (int i = 0; i < testFW.Length; i++)
+            //{
+            //    testFW[i] /= 8;
+            //}
+            //Console.WriteLine();
+            //for (int i = 0; i < testFW.Length; i++)
+            //{
+            //    Console.WriteLine(testFW[i]);
+            //}
+            //Console.WriteLine();
+            //double[] testFilteredSamples = Filtering.convolution(testFW, ogTestSamples);
+            //for (int i = 0; i < testFilteredSamples.Length; i++)
+            //{
+            //    Console.WriteLine(testFilteredSamples[i]);
+            //}
         }
 
         // Button to filter using high pass
