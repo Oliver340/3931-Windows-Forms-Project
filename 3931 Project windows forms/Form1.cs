@@ -65,6 +65,7 @@ namespace _3931_Project_windows_forms
         public double[] copied = null;
         complex[] windowDFT;
         WavReader waveReader;
+        public double[] windowedData = null;
         public double[] waveData;
         public double[] plottedWaveData;
         public byte[] bufferWaveData;
@@ -72,6 +73,8 @@ namespace _3931_Project_windows_forms
         public double[] Highlighted;
         double x1 = 0;
         double x2 = 0;
+        double x3 = 0;
+        double x4 = 0;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -317,6 +320,8 @@ namespace _3931_Project_windows_forms
         {
             if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
             {
+                freqChart.Series["Series1"].Points.Clear();
+                freqChart.Series["Series2"].Points.Clear();
                 if (e.NewSelectionStart < e.NewSelectionEnd)
                 {
                     x1 = e.NewSelectionStart + hScrollBar1.Value;
@@ -331,6 +336,24 @@ namespace _3931_Project_windows_forms
                 for (double i = x1; i < x2; i++)
                 {
                     Highlighted[(int)(i-x1)]=waveData[(int)i];
+                }
+            }
+        }
+
+        //function to control what second selection area does
+        private void chart2_SelectionRangeChanged(object sender, CursorEventArgs e)
+        {
+            if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
+            {
+                if (e.NewSelectionStart < e.NewSelectionEnd)
+                {
+                    x3 = e.NewSelectionStart + hScrollBar1.Value;
+                    x4 = e.NewSelectionEnd + hScrollBar1.Value;
+                }
+                else
+                {
+                    x3 = e.NewSelectionStart + hScrollBar1.Value;
+                    x4 = e.NewSelectionEnd + hScrollBar1.Value;
                 }
             }
         }
@@ -536,6 +559,9 @@ namespace _3931_Project_windows_forms
         //Triangular Window
         private void button11_Click(object sender, EventArgs e)
         {
+            freqChart.ChartAreas[0].CursorX.IsUserEnabled = true;
+            freqChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
+            freqChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
             int N = Highlighted.Length;
             double[] selectedSamples = new double[N];
             for (int i = 0; i < N; i++)
@@ -551,6 +577,81 @@ namespace _3931_Project_windows_forms
             }
             windowDFT = Fourier.DFT(selectedSamples, selectedSamples.Length);
             freqChart.Series["Series1"].Points.Clear();
+            freqChart.Series["Series2"].Points.Clear();
+            for (int i = 0; i < windowDFT.Length; i++)
+            {
+                selectedSamples[i] = Math.Sqrt((windowDFT[i].im * windowDFT[i].im) + (windowDFT[i].re * windowDFT[i].re));
+                freqChart.Series["Series1"].Points.AddXY(i, selectedSamples[i]);
+            }
+        }
+
+        //Low-Pass
+        private void button13_Click(object sender, EventArgs e)
+        {
+            int sampleRate = (int)waveReader.getSampleRate();
+            int filterSize = (int)x4;
+            Console.WriteLine(filterSize);
+            Console.WriteLine(x2);
+            double fcut = x3 * sampleRate / filterSize;
+            Console.WriteLine(fcut);
+            Console.WriteLine(sampleRate);
+            Console.WriteLine();
+
+            complex[] filter = Filtering.lowPassFilter(filterSize, fcut, sampleRate);
+            double[] fw = Fourier.inverseDFT(filter, filterSize);
+            for (int i = 0; i < fw.Length; i++)
+            {
+                fw[i] /= filterSize;
+            }
+            windowedData = Filtering.convolution(fw, waveData);
+            freqChart.Series["Series2"].Points.Clear();
+            for (int i = (int)x1; i <(int)x2; i++)
+            {
+                freqChart.Series["Series2"].Points.AddXY(i - x1, windowedData[i]);
+            }
+        }
+
+        //High-Pass
+        private void button14_Click(object sender, EventArgs e)
+        {
+            int sampleRate = (int)waveReader.getSampleRate();
+            int filterSize = (int)x4;
+            Console.WriteLine(filterSize);
+            Console.WriteLine(x2);
+            double fcut = x3 * sampleRate / filterSize;
+            Console.WriteLine(fcut);
+            Console.WriteLine(sampleRate);
+            Console.WriteLine();
+
+            complex[] filter = Filtering.highPassFilter(filterSize, fcut, sampleRate);
+            double[] fw = Fourier.inverseDFT(filter, filterSize);
+            for (int i = 0; i < fw.Length; i++)
+            {
+                fw[i] /= filterSize;
+            }
+            windowedData = Filtering.convolution(fw, waveData);
+            freqChart.Series["Series2"].Points.Clear();
+            for (int i = (int)x1; i < (int)x2; i++)
+            {
+                freqChart.Series["Series2"].Points.AddXY(i - x1, windowedData[i]);
+            }
+        }
+
+        //Rectangle Windowing
+        private void button16_Click(object sender, EventArgs e)
+        {
+            freqChart.ChartAreas[0].CursorX.IsUserEnabled = true;
+            freqChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
+            freqChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
+            int N = Highlighted.Length;
+            double[] selectedSamples = new double[N];
+            for (int i = 0; i < N; i++)
+            {
+                selectedSamples[i] = Highlighted[i];
+            }
+            windowDFT = Fourier.DFT(selectedSamples, selectedSamples.Length);
+            freqChart.Series["Series1"].Points.Clear();
+            freqChart.Series["Series2"].Points.Clear();
             for (int i = 0; i < windowDFT.Length; i++)
             {
                 selectedSamples[i] = Math.Sqrt((windowDFT[i].im * windowDFT[i].im) + (windowDFT[i].re * windowDFT[i].re));

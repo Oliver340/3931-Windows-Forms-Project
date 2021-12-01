@@ -29,7 +29,7 @@ namespace _3931_Project_windows_forms
                 {
                     sum += newSamples[i + j] * fw[j];
                 }
-                //s[i] = sum / fw.Length;
+                s[i] = sum;
             }
             return s;
         }

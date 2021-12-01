@@ -39,6 +39,7 @@ namespace _3931_Project_windows_forms
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.button1 = new System.Windows.Forms.Button();
             this.WaveChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
@@ -57,6 +58,8 @@ namespace _3931_Project_windows_forms
             this.freqChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.button13 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.WaveChart)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.freqChart)).BeginInit();
@@ -259,10 +262,16 @@ namespace _3931_Project_windows_forms
             series3.ChartArea = "ChartArea1";
             series3.Legend = "Legend1";
             series3.Name = "Series1";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Legend = "Legend1";
+            series4.Name = "Series2";
             this.freqChart.Series.Add(series3);
+            this.freqChart.Series.Add(series4);
             this.freqChart.Size = new System.Drawing.Size(1412, 432);
             this.freqChart.TabIndex = 20;
             this.freqChart.Text = "chart1";
+            this.freqChart.SelectionRangeChanged += chart2_SelectionRangeChanged;
             // 
             // button13
             // 
@@ -272,6 +281,7 @@ namespace _3931_Project_windows_forms
             this.button13.TabIndex = 21;
             this.button13.Text = "Low-Pass";
             this.button13.UseVisualStyleBackColor = true;
+            this.button13.Click += new System.EventHandler(this.button13_Click);
             // 
             // button14
             // 
@@ -281,12 +291,34 @@ namespace _3931_Project_windows_forms
             this.button14.TabIndex = 22;
             this.button14.Text = "High-Pass";
             this.button14.UseVisualStyleBackColor = true;
+            this.button14.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(1437, 747);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(224, 40);
+            this.button15.TabIndex = 23;
+            this.button15.Text = "Apply";
+            this.button15.UseVisualStyleBackColor = true;
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(485, 478);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(184, 45);
+            this.button16.TabIndex = 24;
+            this.button16.Text = "Rectangle";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1746, 1295);
+            this.Controls.Add(this.button16);
+            this.Controls.Add(this.button15);
             this.Controls.Add(this.button14);
             this.Controls.Add(this.button13);
             this.Controls.Add(this.freqChart);
@@ -338,6 +370,8 @@ namespace _3931_Project_windows_forms
         private System.Windows.Forms.DataVisualization.Charting.Chart freqChart;
         private Button button13;
         private Button button14;
+        private Button button15;
+        private Button button16;
     }
 }
 
