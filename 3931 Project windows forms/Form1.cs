@@ -658,5 +658,21 @@ namespace _3931_Project_windows_forms
                 freqChart.Series["Series1"].Points.AddXY(i, selectedSamples[i]);
             }
         }
+
+        //Apply window to waveData
+        private void button15_Click(object sender, EventArgs e)
+        {
+            waveData = windowedData;
+            setPlot(waveData);
+            plotWaveform(waveData);
+
+            bufferWaveData = waveData.Select(x => Convert.ToInt16(x))
+                              .SelectMany(x => BitConverter.GetBytes(x))
+                              .ToArray();
+            fixed (byte* array = bufferWaveData)
+            {
+                setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample(), (short)waveReader.getNumChannels());
+            }
+        }
     }
 }

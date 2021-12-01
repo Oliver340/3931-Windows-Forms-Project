@@ -301,6 +301,7 @@ namespace _3931_Project_windows_forms
             this.button15.TabIndex = 23;
             this.button15.Text = "Apply";
             this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
             // 
             // button16
             // 
