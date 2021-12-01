@@ -96,18 +96,18 @@ namespace _3931_Project_windows_forms
             {
                 Console.WriteLine(filter[i].re);
             }
-            Console.WriteLine();
-            for (int i = 0; i < fw.Length; i++)
-            {
-                Console.WriteLine(fw[i]);
-            }
-            Console.WriteLine();
-            for (int i = 0; i < filteredSamples.Length; i++)
-            {
-                Console.WriteLine(filteredSamples[i]);
-            }
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine();
+            //for (int i = 0; i < fw.Length; i++)
+            //{
+            //    Console.WriteLine(fw[i]);
+            //}
+            //Console.WriteLine();
+            //for (int i = 0; i < filteredSamples.Length; i++)
+            //{
+            //    Console.WriteLine(filteredSamples[i]);
+            //}
+            //Console.WriteLine();
+            //Console.WriteLine();
 
 
             //double[] ogTestSamples = { 2, 1, 5, 4, 9, 7, 8, 6, 4, 6, 4, 6, 1 };
