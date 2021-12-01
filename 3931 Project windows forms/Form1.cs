@@ -47,7 +47,7 @@ namespace _3931_Project_windows_forms
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            hScrollBar1.Visible = false;
+            //hScrollBar1.Visible = false;
             freqChart.Series["Series1"].Points.AddXY(0, 0);
             for (int i = 0; i < 10; i++)
             {
