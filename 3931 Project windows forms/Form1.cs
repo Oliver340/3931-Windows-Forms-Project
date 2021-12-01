@@ -47,6 +47,8 @@ namespace _3931_Project_windows_forms
         }
         private void Form1_Load(object sender, EventArgs e)
         {
+            hScrollBar1.Visible = false;
+            freqChart.Series["Series1"].Points.AddXY(0, 0);
             for (int i = 0; i < 10; i++)
             {
                 WaveChart.Series["ZeroSeries"].Points.AddXY(i, 0);
@@ -62,6 +64,7 @@ namespace _3931_Project_windows_forms
 
         public double[] copied = null;
         public byte[] copiedBytes = null;
+        complex[] windowDFT;
         WavReader waveReader;
         public double[] waveData;
         public double[] plottedWaveData;
@@ -143,6 +146,7 @@ namespace _3931_Project_windows_forms
             {
                 setPSaveBuffer(array, bufferWaveData.Length, (int) waveReader.getSamplesPerSecond(), (short) waveReader.getBlockAlign(), (short) waveReader.getBitsPerSample(), (short) waveReader.getNumChannels());
             }
+            hScrollBar1.Visible = true;
         }
 
         // Function to initialize the display wave data
@@ -344,7 +348,7 @@ namespace _3931_Project_windows_forms
             copied = Highlighted;
             copiedBytes = BufferHighlight;
             waveData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
-            bufferWaveData = CopyPaste.ByteCut(bufferWaveData, BufferHighlight, sizeof(Int16) * x1, sizeof(Int16) * x2);
+            bufferWaveData = CopyPaste.ByteCut(bufferWaveData, BufferHighlight, sizeof(Int16) * (x1), sizeof(Int16) * (x2));
             plotWaveform(waveData);
 
             fixed (byte* array = bufferWaveData)
@@ -365,7 +369,7 @@ namespace _3931_Project_windows_forms
         private void button5_Click(object sender, EventArgs e)
         {
             double[] newData = CopyPaste.Paste(waveData, copied, x1, x2);
-            byte[] buffer = CopyPaste.BytePaste(bufferWaveData, copiedBytes, sizeof(Int16) * x1, sizeof(Int16) * x2);
+            byte[] buffer = CopyPaste.BytePaste(bufferWaveData, copiedBytes, sizeof(Int16) * (x1), sizeof(Int16) * (x2));
             waveData = newData;
             bufferWaveData = buffer;
             plotWaveform(newData);
@@ -531,6 +535,30 @@ namespace _3931_Project_windows_forms
             fixed (byte* array = bufferWaveData)
             {
                 setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample(), (short)waveReader.getNumChannels());
+            }
+        }
+        //Triangular Window
+        private void button11_Click(object sender, EventArgs e)
+        {
+            int N = Highlighted.Length;
+            double[] selectedSamples = new double[N];
+            for (int i = 0; i < N; i++)
+            {
+                if (i<=N/2)
+                {
+                    selectedSamples[i] = i / Math.Truncate((double)N / 2);
+                } else
+                {
+                    selectedSamples[i] = 2 - (i / Math.Truncate((double)N / 2));
+                }
+                selectedSamples[i] *= Highlighted[i];
+            }
+            windowDFT = Fourier.DFT(selectedSamples, selectedSamples.Length);
+            freqChart.Series["Series1"].Points.Clear();
+            for (int i = 0; i < windowDFT.Length; i++)
+            {
+                selectedSamples[i] = Math.Sqrt((windowDFT[i].im * windowDFT[i].im) + (windowDFT[i].re * windowDFT[i].re));
+                freqChart.Series["Series1"].Points.AddXY(i, selectedSamples[i]);
             }
         }
     }
