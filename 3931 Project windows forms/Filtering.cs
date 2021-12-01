@@ -45,7 +45,7 @@ namespace _3931_Project_windows_forms
                 filter[i].re = 1;
                 filter[i].im = 0;
             }
-            for (int i = filterSize - 1; i >= filterSize - amountOfOnes; i--)
+            for (int i = filterSize - 1; i >= filterSize - amountOfOnes && i < filterSize; i--)
             {
                 filter[i].re = 1;
                 filter[i].im = 0;
