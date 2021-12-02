@@ -105,6 +105,7 @@ namespace _3931_Project_windows_forms
             this.WaveChart.TabIndex = 1;
             this.WaveChart.Text = "WaveChart";
             this.WaveChart.SelectionRangeChanged += chart_SelectionRangeChanged;
+            this.freqChart.SelectionRangeChanged += chart2_SelectionRangeChanged;
             // 
             // trackBar1
             // 
@@ -130,7 +131,7 @@ namespace _3931_Project_windows_forms
             // button4
             // 
             this.button4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button4.Location = new System.Drawing.Point(279, 306);
+            this.button4.Location = new System.Drawing.Point(342, 306);
             this.button4.Margin = new System.Windows.Forms.Padding(2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(65, 28);
@@ -142,7 +143,7 @@ namespace _3931_Project_windows_forms
             // button5
             // 
             this.button5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button5.Location = new System.Drawing.Point(447, 306);
+            this.button5.Location = new System.Drawing.Point(510, 306);
             this.button5.Margin = new System.Windows.Forms.Padding(2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(65, 28);
@@ -154,7 +155,7 @@ namespace _3931_Project_windows_forms
             // button6
             // 
             this.button6.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.button6.Location = new System.Drawing.Point(363, 306);
+            this.button6.Location = new System.Drawing.Point(426, 306);
             this.button6.Margin = new System.Windows.Forms.Padding(2);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(65, 28);
@@ -232,9 +233,9 @@ namespace _3931_Project_windows_forms
             this.button12.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.button12.Location = new System.Drawing.Point(195, 306);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(65, 28);
+            this.button12.Size = new System.Drawing.Size(112, 28);
             this.button12.TabIndex = 18;
-            this.button12.Text = "DFT";
+            this.button12.Text = "Open DFT";
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
@@ -274,7 +275,6 @@ namespace _3931_Project_windows_forms
             this.freqChart.Size = new System.Drawing.Size(854, 309);
             this.freqChart.TabIndex = 20;
             this.freqChart.Text = "chart1";
-            this.freqChart.SelectionRangeChanged += chart2_SelectionRangeChanged;
             // 
             // button13
             // 

@@ -131,9 +131,19 @@ namespace _3931_Project_windows_forms
             byte[] buffer = binaryReader.ReadBytes(waveReader.getSubChunk2Size());
 
             short[] shortBuffer = new short[buffer.Length / waveReader.getBlockAlign()];
-            for (int i = 0; i < shortBuffer.Length - 1; i++)
+            if (waveReader.bitsPerSample == 8)
             {
-                shortBuffer[i] = BitConverter.ToInt16(buffer, waveReader.getBlockAlign() * i);
+                for (int i = 0; i < shortBuffer.Length - 1; i++)
+                {
+                    shortBuffer[i] = (short) (buffer[i] - 128);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < shortBuffer.Length - 1; i++)
+                {
+                    shortBuffer[i] = BitConverter.ToInt16(buffer, waveReader.getBlockAlign() * i);
+                }
             }
             double[] newData = shortBuffer.Select(x => (double)(x)).ToArray();
 
@@ -572,12 +582,7 @@ namespace _3931_Project_windows_forms
         {
             int sampleRate = (int)waveReader.getSampleRate();
             int filterSize = (int)x4;
-            Console.WriteLine(filterSize);
-            Console.WriteLine(x2);
             double fcut = x3 * sampleRate / filterSize;
-            Console.WriteLine(fcut);
-            Console.WriteLine(sampleRate);
-            Console.WriteLine();
 
             complex[] filter = Filtering.lowPassFilter(filterSize, fcut, sampleRate);
             double[] fw = Fourier.inverseDFT(filter, filterSize);
@@ -598,12 +603,7 @@ namespace _3931_Project_windows_forms
         {
             int sampleRate = (int)waveReader.getSampleRate();
             int filterSize = (int)x4;
-            Console.WriteLine(filterSize);
-            Console.WriteLine(x2);
             double fcut = x3 * sampleRate / filterSize;
-            Console.WriteLine(fcut);
-            Console.WriteLine(sampleRate);
-            Console.WriteLine();
 
             complex[] filter = Filtering.highPassFilter(filterSize, fcut, sampleRate);
             double[] fw = Fourier.inverseDFT(filter, filterSize);
@@ -648,9 +648,24 @@ namespace _3931_Project_windows_forms
             setPlot(waveData);
             plotWaveform(waveData);
 
-            bufferWaveData = waveData.Select(x => Convert.ToInt32(x))
-                              .SelectMany(x => BitConverter.GetBytes(x))
-                              .ToArray();
+            if (waveReader.bitsPerSample > 16)
+            {
+                bufferWaveData = waveData.Select(x => Convert.ToInt32(x))
+                                  .SelectMany(x => BitConverter.GetBytes(x))
+                                  .ToArray();
+            } else if (waveReader.bitsPerSample > 8)
+            {
+                bufferWaveData = waveData.Select(x => Convert.ToInt16(x))
+                                  .SelectMany(x => BitConverter.GetBytes(x))
+                                  .ToArray();
+            } else
+            {
+                for (int i = 0; i < waveData.Length; i++)
+                {
+                    bufferWaveData[i] = (byte)(waveData[i] + 128);
+                }
+            }
+
             fixed (byte* array = bufferWaveData)
             {
                 setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample(), (short)waveReader.getNumChannels());
