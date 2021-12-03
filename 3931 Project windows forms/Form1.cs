@@ -375,9 +375,26 @@ namespace _3931_Project_windows_forms
             waveData = CopyPaste.Cut(waveData, Highlighted, x1, x2);
             setPlot(waveData);
             plotWaveform(waveData);
-            bufferWaveData = waveData.Select(x => Convert.ToInt16(x))
-                              .SelectMany(x => BitConverter.GetBytes(x))
-                              .ToArray();
+
+            if (waveReader.bitsPerSample > 16)
+            {
+                bufferWaveData = waveData.Select(x => Convert.ToInt32(x))
+                                  .SelectMany(x => BitConverter.GetBytes(x))
+                                  .ToArray();
+            }
+            else if (waveReader.bitsPerSample > 8)
+            {
+                bufferWaveData = waveData.Select(x => Convert.ToInt16(x))
+                                  .SelectMany(x => BitConverter.GetBytes(x))
+                                  .ToArray();
+            }
+            else
+            {
+                for (int i = 0; i < waveData.Length; i++)
+                {
+                    bufferWaveData[i] = (byte)(waveData[i] + 128);
+                }
+            }
 
             fixed (byte* array = bufferWaveData)
             {
@@ -397,9 +414,27 @@ namespace _3931_Project_windows_forms
         {
             double[] newData = CopyPaste.Paste(waveData, copied, x1, x2);
             waveData = newData;
-            bufferWaveData = newData.Select(x => Convert.ToInt16(x))
-                              .SelectMany(x => BitConverter.GetBytes(x))
-                              .ToArray();
+
+            if (waveReader.bitsPerSample > 16)
+            {
+                bufferWaveData = waveData.Select(x => Convert.ToInt32(x))
+                                  .SelectMany(x => BitConverter.GetBytes(x))
+                                  .ToArray();
+            }
+            else if (waveReader.bitsPerSample > 8)
+            {
+                bufferWaveData = waveData.Select(x => Convert.ToInt16(x))
+                                  .SelectMany(x => BitConverter.GetBytes(x))
+                                  .ToArray();
+            }
+            else
+            {
+                for (int i = 0; i < waveData.Length; i++)
+                {
+                    bufferWaveData[i] = (byte)(waveData[i] + 128);
+                }
+            }
+
             setPlot(newData);
             plotWaveform(newData);
 
