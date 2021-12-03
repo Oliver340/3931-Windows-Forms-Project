@@ -593,11 +593,17 @@ namespace _3931_Project_windows_forms
             windowDFT = Fourier.DFT(selectedSamples, selectedSamples.Length);
             freqChart.Series["Series1"].Points.Clear();
             freqChart.Series["Series2"].Points.Clear();
+            double scale = 0;
             for (int i = 0; i < windowDFT.Length; i++)
             {
                 selectedSamples[i] = Math.Sqrt((windowDFT[i].im * windowDFT[i].im) + (windowDFT[i].re * windowDFT[i].re));
                 freqChart.Series["Series1"].Points.AddXY(i, selectedSamples[i]);
+                if (scale < selectedSamples[i])
+                {
+                    scale = selectedSamples[i];
+                }
             }
+            freqChart.ChartAreas[0].AxisY.Maximum = scale * 2;
         }
 
         //Low-Pass
@@ -693,6 +699,35 @@ namespace _3931_Project_windows_forms
             {
                 setPSaveBuffer(array, bufferWaveData.Length, (int)waveReader.getSamplesPerSecond(), (short)waveReader.getBlockAlign(), (short)waveReader.getBitsPerSample(), (short)waveReader.getNumChannels());
             }
+        }
+
+        //Hann Windowing
+        private void button17_Click(object sender, EventArgs e)
+        {
+            freqChart.ChartAreas[0].CursorX.IsUserEnabled = true;
+            freqChart.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
+            freqChart.ChartAreas[0].AxisX.ScaleView.Zoomable = false;
+            int N = Highlighted.Length;
+            double[] selectedSamples = new double[N];
+            for (int n = 0; n < N; n++)
+            {
+                selectedSamples[n] = 0.5 * (1 - Math.Cos(2 * Math.PI * n / N));
+                selectedSamples[n] *= Highlighted[n];
+            }
+            windowDFT = Fourier.DFT(selectedSamples, selectedSamples.Length);
+            freqChart.Series["Series1"].Points.Clear();
+            freqChart.Series["Series2"].Points.Clear();
+            double scale = 0; ;
+            for (int i = 0; i < windowDFT.Length; i++)
+            {
+                selectedSamples[i] = Math.Sqrt((windowDFT[i].im * windowDFT[i].im) + (windowDFT[i].re * windowDFT[i].re));
+                freqChart.Series["Series1"].Points.AddXY(i, selectedSamples[i]);
+                if (scale<selectedSamples[i])
+                {
+                    scale = selectedSamples[i];
+                }
+            }
+            freqChart.ChartAreas[0].AxisY.Maximum = scale*2;
         }
     }
 }
