@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using HINSTANCE = System.IntPtr;
 
+// Form class represents the main window and displays the wave, contains buttons for various functionality.
 namespace _3931_Project_windows_forms
 {
 
@@ -20,24 +21,34 @@ namespace _3931_Project_windows_forms
         //double x1 = 0;
         //double x2 = 0;
         [DllImport("RecordDLL.dll")]
+        // Function to start the Record dll
         public static extern int start();
         [DllImport("RecordDLL.dll")]
+        // Function to get the wave data from the dll
         public static extern IntPtr getPSaveBuffer();
         [DllImport("RecordDLL.dll")]
+        // Function to get the the length of wave data
         public static extern uint getSizePSaveBuffer();
         [DllImport("RecordDLL.dll", CallingConvention = CallingConvention.Cdecl)]
+        // Function to set the psave buffer of the local byte wave data (bufferWaveData)
         public static extern void setPSaveBuffer(byte* values, int length, int samplesPerSec, short blockAlign, short bitsPerSample, short numChannels);
         [DllImport("RecordDLL.dll")]
+        // Function to set the size of the wave data in the dll
         public static extern void setSizePSaveBuffer(int length);
         [DllImport("RecordDLL.dll")]
+        // Function to send a record message to the dll
         public static extern void recordData();
         [DllImport("RecordDLL.dll")]
+        // Function to send a stop record message to the dll
         public static extern void stopRecordData();
         [DllImport("RecordDLL.dll")]
+        // Function to send the play message to the dll
         public static extern void playData();
         [DllImport("RecordDLL.dll")]
+        // Function to send the pause message to the dll
         public static extern void pauseData();
         [DllImport("RecordDLL.dll")]
+        // Function to send the stop message to the dll
         public static extern void stopPlayData();
 
 
@@ -45,6 +56,7 @@ namespace _3931_Project_windows_forms
         {
             InitializeComponent();
         }
+        // Function that initializes some components
         private void Form1_Load(object sender, EventArgs e)
         {
             //hScrollBar1.Visible = false;
@@ -62,6 +74,8 @@ namespace _3931_Project_windows_forms
             start();
         }
 
+        //Globals for double array of wave data and byte array of wave data
+        // as well as some other stuff for highlighting and.
         public double[] copied = null;
         complex[] windowDFT;
         WavReader waveReader;
@@ -76,6 +90,11 @@ namespace _3931_Project_windows_forms
         double x3 = 0;
         double x4 = 0;
 
+        /// <summary>
+        /// Open Button to initialize dialog and set/plot the current wave data
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button1_Click(object sender, EventArgs e)
         {
             //Basically the menu where you select files
@@ -90,23 +109,7 @@ namespace _3931_Project_windows_forms
 
             Highlighted = new double[0];
             BinaryReader binaryReader = new BinaryReader(System.IO.File.OpenRead(openFileDialog.FileName));
-
-            //Initializing Header
-            //waveReader = new WavReader(
-            //    binaryReader.ReadInt32(),
-            //    binaryReader.ReadInt32(),
-            //    binaryReader.ReadInt32(),
-            //    binaryReader.ReadInt32(),
-            //    binaryReader.ReadInt32(),
-            //    binaryReader.ReadUInt16(),
-            //    binaryReader.ReadUInt16(),
-            //    binaryReader.ReadUInt32(),
-            //    binaryReader.ReadUInt32(),
-            //    binaryReader.ReadUInt16(),
-            //    binaryReader.ReadUInt16(),
-            //    binaryReader.ReadInt32(),
-            //    binaryReader.ReadInt32()
-            //    );
+            //Initialize header data
             waveReader = new WavReader();
             waveReader.chunkID = binaryReader.ReadInt32();
             waveReader.chunkSize = binaryReader.ReadInt32();
@@ -153,6 +156,7 @@ namespace _3931_Project_windows_forms
             setPlot(newData);
             plotWaveform(newData);
 
+            // Set the dll data
             fixed (byte* array = bufferWaveData)
             {
                 setPSaveBuffer(array, bufferWaveData.Length, (int) waveReader.getSamplesPerSecond(), (short) waveReader.getBlockAlign(), (short) waveReader.getBitsPerSample(), (short) waveReader.getNumChannels());
@@ -160,7 +164,10 @@ namespace _3931_Project_windows_forms
             hScrollBar1.Visible = true;
         }
 
-        // Function to initialize the display wave data
+        /// <summary>
+        /// Function to initialize the display wave data
+        /// </summary>
+        /// <param name="newData">new wave data samples</param>
         public void initWaveData(double[] newData)
         {
             waveData = newData;
@@ -168,6 +175,10 @@ namespace _3931_Project_windows_forms
         }
 
         // Function to initialize the buffer wave data
+        /// <summary>
+        /// Function to initialize the buffer wave data
+        /// </summary>
+        /// <param name="buffer">samples for the byte array</param>
         private void initBufferData(byte[] buffer)
         {
             bufferWaveData = buffer;
@@ -192,7 +203,7 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Horizontal ScrollBar
+        // Horizontal ScrollBar, plots data
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             if (WaveChart.ChartAreas[0].AxisX.ScaleView.Size + hScrollBar1.Value < waveData.Length)
@@ -201,7 +212,7 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Mouse scroll zoom
+        // Mouse scroll zoom, deletes some data when zooming in and adds points when zooming out
         private void chart1_MouseWheel(object sender, MouseEventArgs e)
         {
             int initSize = (int)WaveChart.ChartAreas[0].AxisX.ScaleView.Size;
@@ -231,7 +242,7 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Function to set the plot of wave display
+        // Function to set the plot of wave display, initialize the starting chart areas
         public void setPlot(double[] newData)
         {
             hScrollBar1.Value = 0;
@@ -243,8 +254,6 @@ namespace _3931_Project_windows_forms
             WaveChart.ChartAreas[0].AxisX.Maximum = Double.NaN;
             WaveChart.Series["ZeroSeries"].Color = Color.Red;
             WaveChart.Series["chartSeries"].Color = Color.Blue;
-            //WaveChart.ChartAreas[0].AxisX.ScrollBar.Enabled = true;
-            //WaveChart.ChartAreas[0].AxisX.ScrollBar.Axis.Maximum = newData.Length;
             WaveChart.ChartAreas[0].AxisX.ScaleView.Size = 100;
             hScrollBar1.Maximum = newData.Length - (int)WaveChart.ChartAreas[0].AxisX.ScaleView.Size;
             if (newData.Min() > newData.Max())
@@ -257,8 +266,6 @@ namespace _3931_Project_windows_forms
                 WaveChart.ChartAreas[0].AxisY.Minimum = -newData.Max();
                 WaveChart.ChartAreas[0].AxisY.Maximum = newData.Max();
             }
-            //WaveChart.ChartAreas[0].AxisY.Minimum = -128;
-            //WaveChart.ChartAreas[0].AxisY.Maximum = 128;
 
             trackBar1.Minimum = 0;
             trackBar1.Maximum = 11;
@@ -266,7 +273,7 @@ namespace _3931_Project_windows_forms
             this.WaveChart.MouseWheel += chart1_MouseWheel;
         }
 
-        // Volume Track Bar
+        // Volume Track Bar, changes the plot of the data, multiplies original display
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             if (waveData != null)
@@ -297,35 +304,15 @@ namespace _3931_Project_windows_forms
             {
                 amplitudes[i] = (byte)Math.Min(Math.Max(originalAmplitudes[i] * change, 0), 255);
             }
+            // Does not set the dll data
             //fixed (byte* bytePtr = amplitudes)
             //{
             //    setPSaveBuffer(bytePtr, amplitudes.Length, waveReader.getSamplesPerSecond(), waveReader.getBlockAlign(), waveReader.getBitsPerSample());
             //}
         }
 
-        //int mdown;
-        /*        private void WaveChart_MouseUp(object sender, MouseEventArgs e)
-                {
-                    double x1 = WaveChart.ChartAreas[0].CursorX.SelectionStart;
-                    double x2 = WaveChart.ChartAreas[0].CursorX.SelectionEnd;
-                    Highlighted = new List<DataPoint>();
-                    Axis ax = WaveChart.ChartAreas[0].AxisX;
-                    foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
-                    {
-                        int x = (int)(ax.ValueToPixelPosition(wave.XValue)-94);
-                        if ((x1 <= x && x <= x2) || (x2 <= x && x <= x1))
-                        {
-                            Highlighted.Add(wave);
-                        }
-                    }
-                    foreach (DataPoint wave in WaveChart.Series["chartSeries"].Points)
-                    {
-                        wave.Color = Highlighted.Contains(wave) ? Color.Red : Color.Blue;
-                    }
-                    WaveChart.Refresh();
-                }*/
-
         //function to control what selection area does
+        // Highlighted is an array x values are start and end index of selection
         private void chart_SelectionRangeChanged(object sender, CursorEventArgs e)
         {
             if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
@@ -350,7 +337,8 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //function to control what second selection area does
+        //function to control what second selection area does, for the byte array
+        // (similar to above function)
         private void chart2_SelectionRangeChanged(object sender, CursorEventArgs e)
         {
             if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
@@ -368,7 +356,7 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //Cut button
+        //Cut button, replots data on wave and changes the buffer data and sets the dll
         private void button6_Click(object sender, EventArgs e)
         {
             copied = Highlighted;
