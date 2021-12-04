@@ -10,39 +10,16 @@ namespace _3931_Project_windows_forms
 {
     internal class CopyPaste
     {
-        public static void Copy(double[] copy)
-        {
-            byte[] copyBytes = new byte[copy.Length*sizeof(double)];
-            Buffer.BlockCopy(copy, 0, copyBytes, 0, copyBytes.Length);
-            Clipboard.SetAudio(copyBytes);
-        }
+        ///<summary>
+        ///Inserts the copied array into the original waveform, overwriting the areas between x1 and x2
+        ///</summary>
+        ///<param name="original">The initial array of doubles, representing the waveform</param>
+        ///<param name="copied">The array of doubles, copied from the original array</param>
+        ///<param name="x1">The point in the array that you start pasting to</param>
+        ///<param name="x2">The point in the array that you stop pasting to</param>
+        ///<returns>The new array to be charted</returns>
         public static double[] Paste(double[] original, double[] copied, double x1, double x2)
         {
-/*            if (!Clipboard.ContainsAudio())
-            {
-                return original;
-            }
-            BinaryReader binaryReader = new BinaryReader(Clipboard.GetAudioStream());
-
-            //Initializing Header
-            WavReader waveReader = new WavReader(
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt16(),
-                binaryReader.ReadInt16(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt16(),
-                binaryReader.ReadInt16(),
-                binaryReader.ReadInt32(),
-                binaryReader.ReadInt32()
-                );
-            byte[] buffer = binaryReader.ReadBytes(waveReader.getSubChunk2Size());
-            int bufferLength = (buffer.Length / waveReader.getBlockAlign());*/
-
             if (copied==null)
             {
                 return original;
@@ -65,10 +42,16 @@ namespace _3931_Project_windows_forms
             }
             return newWave;
         }
-
+        ///<summary>
+        ///Removes a section of the original waveform between x1 and x2
+        ///</summary>
+        ///<param name="original">The initial array of doubles, representing the waveform</param>
+        ///<param name="selection">The selected array of doubles from the initial waveform</param>
+        ///<param name="x1">The point in the array that you start removing</param>
+        ///<param name="x2">The point in the array that you stop removing</param>
+        ///<returns>The new array to be charted</returns>
         public static double[] Cut(double[] original, double[] selection, double x1, double x2)
         {
-            //Copy(selection);
             double[] newWave = new double[original.Length - selection.Length];
             for (int i = 0; i < x1; i++)
             {
