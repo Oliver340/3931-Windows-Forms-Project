@@ -14,7 +14,12 @@ namespace _3931_Project_windows_forms
 
     public static class Fourier
     {
-
+        /// <summary>
+        /// Turn an array of doubles into an array of real and imaginary values
+        /// </summary>
+        /// <param name="s">The array to perform fourier on</param>
+        /// <param name="N">The length of the array</param>
+        /// <returns>An array of real and imaginary values</returns>
         public static complex[] DFT(double[] s, int N)
         {
             complex[] A = new complex[N];
@@ -35,6 +40,12 @@ namespace _3931_Project_windows_forms
             return A;
         }
 
+        /// <summary>
+        /// Turn an array of real and imaginary values into an array of doubles
+        /// </summary>
+        /// <param name="A">The array to perform inverse Fourier on</param>
+        /// <param name="N">The length of the array</param>
+        /// <returns>An array of doubles</returns>
         public static double[] inverseDFT(complex[] A, int N)
         {
             double[] s = new double[N];
@@ -50,14 +61,5 @@ namespace _3931_Project_windows_forms
             }
             return s;
         }
-        public static void divideByN(complex[] A, int N)
-        {
-            for (int i = 0; i < A.Length; ++i)
-            {
-                A[i].re /= N;
-                A[i].im /= N;
-            }
-        }
-
     }
 }
