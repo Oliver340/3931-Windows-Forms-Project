@@ -174,7 +174,6 @@ namespace _3931_Project_windows_forms
             plottedWaveData = new double[waveData.Length];
         }
 
-        // Function to initialize the buffer wave data
         /// <summary>
         /// Function to initialize the buffer wave data
         /// </summary>
@@ -185,7 +184,10 @@ namespace _3931_Project_windows_forms
             bufferPlottedWaveData = new byte[bufferWaveData.Length];
         }
 
-        // Function to plot a wave
+        /// <summary>
+        /// Function to plot a wave
+        /// </summary>
+        /// <param name="newData">new wave data samples (double)</param>
         public void plotWaveform(double[] newData)
         {
             
@@ -203,7 +205,11 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Horizontal ScrollBar, plots data
+        /// <summary>
+        /// Horizontal ScrollBar, plots the data after a scroll
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             if (WaveChart.ChartAreas[0].AxisX.ScaleView.Size + hScrollBar1.Value < waveData.Length)
@@ -212,7 +218,11 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Mouse scroll zoom, deletes some data when zooming in and adds points when zooming out
+        /// <summary>
+        /// Mouse scroll zoom, deletes some data when zooming in and adds points when zooming out
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void chart1_MouseWheel(object sender, MouseEventArgs e)
         {
             int initSize = (int)WaveChart.ChartAreas[0].AxisX.ScaleView.Size;
@@ -242,7 +252,10 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Function to set the plot of wave display, initialize the starting chart areas
+        /// <summary>
+        /// Function to set the plot of wave display, initialize the starting chart areas
+        /// </summary>
+        /// <param name="newData">new wave data for the samples for the double array</param>
         public void setPlot(double[] newData)
         {
             hScrollBar1.Value = 0;
@@ -273,7 +286,11 @@ namespace _3931_Project_windows_forms
             this.WaveChart.MouseWheel += chart1_MouseWheel;
         }
 
-        // Volume Track Bar, changes the plot of the data, multiplies original display
+        /// <summary>
+        /// Volume Track Bar, changes the plot of the data, multiplies original display
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void trackBar1_Scroll(object sender, EventArgs e)
         {
             if (waveData != null)
@@ -287,7 +304,13 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Function to change the wave display volume
+        /// <summary>
+        /// Function to change the wave display volume
+        /// </summary>
+        /// <param name="amplitudes">the amplitudes to change after the volume change</param>
+        /// <param name="originalAmplitudes">the original wave data samples</param>
+        /// <param name="change">the constant to multiply the wave by</param>
+        /// <param name="length">the amount of samples</param>
         void changeVolume(double[] amplitudes, double[] originalAmplitudes, double change, int length)
         {
             for (int i = 0; i < length; i++)
@@ -297,7 +320,13 @@ namespace _3931_Project_windows_forms
 
         }
 
-        // Function to change the volume of recorded data
+        /// <summary>
+        /// Function to change the volume of recorded data
+        /// </summary>
+        /// <param name="amplitudes">the amplitudes to change after the volume change</param>
+        /// <param name="originalAmplitudes">the original wave data samples in bytes</param>
+        /// <param name="change">the constant to multiply the wave by</param>
+        /// <param name="length">the amount of samples</param>
         void changeBufferVolume(byte[] amplitudes, byte[] originalAmplitudes, double change, int length)
         {
             for (int i = 0; i < length; i++)
@@ -311,8 +340,13 @@ namespace _3931_Project_windows_forms
             //}
         }
 
-        //function to control what selection area does
-        // Highlighted is an array x values are start and end index of selection
+
+        /// <summary>
+        /// function to control what selection area does
+        /// Highlighted is an array x values are start and end index of selection
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void chart_SelectionRangeChanged(object sender, CursorEventArgs e)
         {
             if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
@@ -337,8 +371,12 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //function to control what second selection area does, for the byte array
-        // (similar to above function)
+        /// <summary>
+        /// function to control what second selection area does, for the byte array
+        /// (similar to above function)
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void chart2_SelectionRangeChanged(object sender, CursorEventArgs e)
         {
             if (!double.IsNaN(e.NewSelectionStart) && !double.IsNaN(e.NewSelectionEnd))
@@ -356,7 +394,11 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //Cut button, replots data on wave and changes the buffer data and sets the dll
+        /// <summary>
+        /// Cut button, replots data on wave and changes the buffer data and sets the dll
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button6_Click(object sender, EventArgs e)
         {
             copied = Highlighted;
@@ -390,14 +432,22 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //Copy button
+        /// <summary>
+        /// Copy button, to set the Highlighted array to what you select
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button4_Click(object sender, EventArgs e)
         {
             //CopyPaste.Copy(Highlighted);
             copied = Highlighted;
         }
 
-        //Paste button
+        /// <summary>
+        /// Paste button to get the data from the Highlighted array to put into the byte array and the waveData double array
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button5_Click(object sender, EventArgs e)
         {
             double[] newData = CopyPaste.Paste(waveData, copied, x1, x2);
@@ -432,7 +482,11 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        // Save Button
+        /// <summary>
+        /// Save button to write to a file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button7_Click(object sender, EventArgs e)
         {
             // Save file pop up
@@ -493,19 +547,32 @@ namespace _3931_Project_windows_forms
             wr.Dispose();
         }
 
-        // Play button
+        /// <summary>
+        /// Play button to send the play message to the dll
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button8_Click(object sender, EventArgs e)
         {
             playData();
         }
 
-        // Record Button
+
+        /// <summary>
+        /// Record button to send the record message to the dll
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button2_Click(object sender, EventArgs e)
         {
             recordData();
         }
 
-        // Stop Recording Button
+        /// <summary>
+        /// Stop Record button to send the stop record message to the dll
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button3_Click(object sender, EventArgs e)
         {
             stopRecordData();
@@ -533,19 +600,31 @@ namespace _3931_Project_windows_forms
             plotWaveform(waveData);
         }
 
-        // Pause Button
+        /// <summary>
+        /// Pause button to send the pause message to the dll
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button9_Click(object sender, EventArgs e)
         {
             pauseData();
         }
 
-        // Stop PlayBack Button
+        /// <summary>
+        /// Stop playback button to send the stop play message to the dll
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button10_Click(object sender, EventArgs e)
         {
             stopPlayData();
         }
 
-        // DFT
+        /// <summary>
+        /// Button to open a DFT in a seperate window
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button12_Click(object sender, EventArgs e)
         {
             int numberOfSamples = Highlighted.Length;
@@ -563,7 +642,11 @@ namespace _3931_Project_windows_forms
             initFreqPlot(selectedSamples, A);
         }
 
-        // Call Frequency Domain Form
+        /// <summary>
+        /// Call Frequency Domain Form
+        /// </summary>
+        /// <param name="selectedSamples">The selected samples are passed to the frequency domain form to display the DFT</param>
+        /// <param name="A">The DFT of the selected samples</param>
         private void initFreqPlot(double[] selectedSamples, complex[] A)
         {
             FrequencyDomain freqPlot = new FrequencyDomain();
@@ -571,7 +654,11 @@ namespace _3931_Project_windows_forms
             freqPlot.dftFreqChart(selectedSamples, (int) waveReader.getSampleRate(), A, waveData, this);
         }
 
-        //Triangular Window
+        /// <summary>
+        /// Triangular Windowing function
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button11_Click(object sender, EventArgs e)
         {
             freqChart.ChartAreas[0].CursorX.IsUserEnabled = true;
@@ -606,7 +693,11 @@ namespace _3931_Project_windows_forms
             freqChart.ChartAreas[0].AxisY.Maximum = scale * 2;
         }
 
-        //Low-Pass
+        /// <summary>
+        /// Low-Pass function to create a low-pass filter and perform convolution
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button13_Click(object sender, EventArgs e)
         {
             int sampleRate = (int)waveReader.getSampleRate();
@@ -627,7 +718,11 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //High-Pass
+        /// <summary>
+        /// High-Pass function to create a high-pass filter and perform convolution
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button14_Click(object sender, EventArgs e)
         {
             int sampleRate = (int)waveReader.getSampleRate();
@@ -648,7 +743,11 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //DFT Rectangle Windowing
+        /// <summary>
+        /// DFT Rectangle Windowing, to display on the main window and allow filtering
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button16_Click(object sender, EventArgs e)
         {
             freqChart.ChartAreas[0].CursorX.IsUserEnabled = true;
@@ -670,7 +769,11 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //Apply window to waveData
+        /// <summary>
+        /// Apply windowing filter to the wave data
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button15_Click(object sender, EventArgs e)
         {
             waveData = windowedData;
@@ -701,7 +804,11 @@ namespace _3931_Project_windows_forms
             }
         }
 
-        //Hann Windowing
+        /// <summary>
+        /// Hann Windowing function
+        /// </summary>
+        /// <param name="sender">Button</param>
+        /// <param name="e">Button event</param>
         private void button17_Click(object sender, EventArgs e)
         {
             freqChart.ChartAreas[0].CursorX.IsUserEnabled = true;
